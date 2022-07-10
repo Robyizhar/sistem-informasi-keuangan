@@ -138,13 +138,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/create', [DSPController::class, 'create'])->name('dsp.create');
 
-        Route::get('/edit/{id}', [DSPController::class, 'edit'])->name('dsp.edit');
-
         Route::get('/detail/{id}', [DSPController::class, 'show'])->name('dsp.detail');
 
         Route::post('/store', [DSPController::class, 'store'])->name('dsp.store');
-
-        Route::put('/update', [DSPController::class, 'update'])->name('dsp.update');
 
         Route::get('/destroy/{id}', [DSPController::class, 'destroy'])->name('dsp.destroy');
     });

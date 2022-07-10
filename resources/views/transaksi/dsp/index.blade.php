@@ -21,6 +21,7 @@ $(document).ready( function () {
         responsive: true,
         processing: true,
         serverSide: true,
+        orderable: false, 
         method: "POST",
         sPaginationType: "full_numbers",
         ajax: {

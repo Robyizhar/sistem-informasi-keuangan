@@ -11,13 +11,16 @@ use App\Models\PembayaranDsp;
 use App\Models\Angkatan;
 use App\Models\Jurusan;
 use App\Models\Siswa;
+use App\Models\PemasukanSppDsp;
+use DB;
 
 class DSPController extends Controller
 {
-    protected $model, $role;
+    protected $model, $income;
 
-    public function __construct(PembayaranDsp $PembayaranDsp) {
+    public function __construct(PembayaranDsp $PembayaranDsp, PemasukanSppDsp $PemasukanSppDsp) {
         $this->model = new BaseRepository($PembayaranDsp);
+        $this->income = new BaseRepository($PemasukanSppDsp);
         $this->middleware('auth');
     }
 
@@ -26,14 +29,14 @@ class DSPController extends Controller
     }
 
     public function getData() {
-        $data = PembayaranDsp::with('siswa')->orderBy('id', 'DESC')->get();
+        $data = PembayaranDsp::with('siswa')->orderBy('pembayaran_dsps.id', 'desc')->get();
         return DataTables::of($data)
         ->addColumn('Aksi', function ($data) {
 
             return view('layouts.component.action', [
                 'model' => $data,
-                'url_edit' => route('dsp.edit', $data->id),
-                'url_detail' => route('dsp.detail', $data->id),
+                // 'url_edit' => route('dsp.edit', $data->id),
+                // 'url_detail' => route('dsp.detail', $data->id),
                 'url_destroy' => route('dsp.destroy', $data->id),
                 'menu' => 'PembayaranDsp'
             ]);
@@ -74,10 +77,20 @@ class DSPController extends Controller
     public function store(Request $request) {
         try {
             $data = $request->except(['_token', '_method', 'id', 'jurusan_id', 'angkatan_id', 'name']);
+            DB::beginTransaction();
             $dsp = $this->model->store($data);
+            if ($dsp) {
+                $this->income->store([
+                    'pembayaran_dsp_id' => $dsp->id, 
+                    'income_source' => 'dsp', 
+                    'income_total' => $data['total_payment']
+                ]);
+            }
             Alert::toast('Pembayaran '.$request->name.' Berhasil Disimpan', 'success');
+            DB::commit();
             return redirect()->route('dsp.index');
         } catch (\Throwable $e) {
+            DB::rollback();
             Alert::toast($e->getMessage(), 'error');
             return back();
         }
@@ -87,33 +100,18 @@ class DSPController extends Controller
         //
     }
 
-    public function edit($id) {
-        try {
-            $data['detail'] = $this->model->find($id);
-            return view('transaksi.dsp.create', compact('data'));
-        } catch (\Throwable $e) {
-            Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('dsp.index');
-        }
-    }
-
-    public function update(Request $request) {
-        try {
-            $data = $request->except(['_token', '_method', 'id']);
-            $dsp = $this->model->update($request->id, $data);
-            Alert::toast($request->name.' Berhasil Disimpan', 'success');
-            return redirect()->route('dsp.index');
-        } catch (\Throwable $e) {
-            Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('dsp.index');
-        }
-    }
-
     public function destroy($id) {
         try {
+            DB::beginTransaction();
             $dsp = $this->model->softDelete($id);
+            if ($dsp) {
+                $income = PemasukanSppDsp::where('pembayaran_dsp_id', $id)->first();
+                $income->delete();
+            }
+            DB::commit();
             return response()->json($dsp, 200);
         } catch (\Throwable $e) {
+            DB::rollback();
             Alert::toast($e->getMessage(), 'error');
             return redirect()->route('dsp.index');
         }

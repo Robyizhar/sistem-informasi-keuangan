@@ -269,7 +269,7 @@
                         <th>${number}</th>
                         <td>${number}</td>
                         <td>${index.created_at}</td>
-                        <td>${index.total_payment}</td>
+                        <td>Rp. ${numberWithCommas(parseInt(index.total_payment))}</td>
                     </tr>`;
                     $('.rekap-pembayaran').append(row_dsp);
                     total_pembayaran = total_pembayaran+parseInt(index.total_payment);
@@ -283,19 +283,18 @@
             $('#sisa_pembayaran').val(sisa_pembayaran)
         });
 
-        // $('.total_payment').keyup(function (e) { 
-        //     e.preventDefault();
-        //     $('.limit_payment').remove();
-        //     let limit_payment = $('#sisa_pembayaran').val()
-        //     let this_val = $(this).val();
-        //     if (parseInt(this_val) > parseInt(limit_payment)) {
-        //         $(this).parent().append(`<span style="color: #ff4040; font-size: 0.9rem;" class='limit_payment'>Maksimal Pembayaran ${numberWithCommas(limit_payment)}</span>`);
-        //         return false;
-        //     } else {
-        //         $('.limit_payment').remove();
-        //     }
-        //     console.log(this_val);
-        // });
+        $('.total_payment').keyup(function (e) { 
+            e.preventDefault();
+            $('.limit_payment').remove();
+            let limit_payment = $('#sisa_pembayaran').val()
+            let this_val = $(this).val();
+            if (parseInt(this_val) > parseInt(limit_payment)) {
+                $(this).parent().append(`<span style="color: #ff4040; font-size: 0.9rem;" class='limit_payment'>Maksimal Pembayaran ${numberWithCommas(limit_payment)}</span>`);
+                return false;
+            } else {
+                $('.limit_payment').remove();
+            }
+        });
 
         function numberWithCommas(number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -310,6 +309,9 @@
                         required: true, 
                         max: function() {
                             return parseInt($('#sisa_pembayaran').val());
+                        },
+                        min: function() {
+                            return 1;
                         }
                     }
                 },
@@ -317,10 +319,15 @@
                     name: { required: "pilih siswa" },
                     total_payment: { 
                         required: "masukan total pembayaran", 
-                        max: "melebihi maksimal sisa pembayaran " + limit_payment
+                        max: "melebihi maksimal sisa pembayaran " + limit_payment,
+                        min: "pembayaran tidak valid "
                     },
                 }, 
-                ignore: ""
+                ignore: "", 
+            });
+
+            $("#form-save-update").submit(function( event ) {
+                $('.limit_payment').remove();
             });
         });
     </script>

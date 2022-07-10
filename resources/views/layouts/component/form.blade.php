@@ -49,7 +49,7 @@
                                     <button type="submit" class="btn btn-primary btn-submit waves-effect waves-light">Submit</button>
                                 </form>
                                 @else
-                                <form action="{{ $action }}" method="POST">
+                                <form id="form-save-update" action="{{ $action }}" method="POST">
                                     @csrf
                                     @method($method)
                                     {{ $content }}

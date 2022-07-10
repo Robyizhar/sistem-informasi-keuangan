@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Master\JurusanController;
 use App\Http\Controllers\Master\AngkatanController;
 use App\Http\Controllers\Master\SiswaController;
+use App\Http\Controllers\Transaksi\DSPController;
 
 Auth::routes();
 
@@ -126,6 +127,26 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', [SiswaController::class, 'update'])->name('siswa.update');
 
         Route::get('/destroy/{id}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+    });
+
+    Route::prefix('dsp')->group(function () {
+        Route::get('/', [DSPController::class, 'index'])->name('dsp.index');
+
+        Route::post('/get-data', [DSPController::class, 'getData']);
+
+        Route::post('/get-siswa', [DSPController::class, 'getSiswa']);
+
+        Route::get('/create', [DSPController::class, 'create'])->name('dsp.create');
+
+        Route::get('/edit/{id}', [DSPController::class, 'edit'])->name('dsp.edit');
+
+        Route::get('/detail/{id}', [DSPController::class, 'show'])->name('dsp.detail');
+
+        Route::post('/store', [DSPController::class, 'store'])->name('dsp.store');
+
+        Route::put('/update', [DSPController::class, 'update'])->name('dsp.update');
+
+        Route::get('/destroy/{id}', [DSPController::class, 'destroy'])->name('dsp.destroy');
     });
 
 });

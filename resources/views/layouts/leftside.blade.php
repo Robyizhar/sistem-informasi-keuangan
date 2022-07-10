@@ -1,12 +1,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="index3.html" class="brand-link">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <a href="{{ url('/') }}" class="brand-link">
+        <span class="brand-text font-weight-light">SMKS AL MUKHLISIYAH</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image"> </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
         </div>
         <nav class="mt-2">
@@ -38,7 +38,7 @@
                 </li>
                 <li class="nav-header">TRANSAKSI</li>
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
+                    <a href="{{ route('dsp.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Pembayaran DSP </p>
                     </a>

@@ -43,7 +43,7 @@ class PermissionsDemoSeeder extends Seeder
         $dev->givePermissionTo(Permission::all());
 
         $user = \App\Models\User::factory()->create([
-            'name' => 'Developer',
+            'name' => 'Robby Izhar RA',
             'email' => 'dev@dev.com',
             'password' => Hash::make('dev')
         ]);

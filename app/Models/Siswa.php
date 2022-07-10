@@ -17,4 +17,8 @@ class Siswa extends Model
     public function angkatan() {
         return $this->belongsTo(Angkatan::class);
     }
+
+    public function dsp() {
+        return $this->hasMany(PembayaranDsp::class);
+    }
 }

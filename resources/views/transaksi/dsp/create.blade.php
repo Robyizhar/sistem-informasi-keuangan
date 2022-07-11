@@ -137,6 +137,8 @@
 @push('script')
     <script>
 
+        const actionUrl = `{{ url('dsp/get-siswa') }}`;
+
         const isNumber = (evt) => {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -154,8 +156,6 @@
             });
             return number_value;
         }
-
-        const actionUrl = `{{ url('dsp/get-siswa') }}`;
 
         $('#angkatan').change(function (e) { 
             e.preventDefault();

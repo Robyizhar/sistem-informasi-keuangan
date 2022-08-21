@@ -36,6 +36,12 @@
                         <p> Jurusan </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('kelas.index') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p> Kelas </p>
+                    </a>
+                </li>
                 <li class="nav-header">TRANSAKSI</li>
                 <li class="nav-item">
                     <a href="{{ route('dsp.index') }}" class="nav-link">
@@ -44,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/kanban.html" class="nav-link">
+                    <a href="{{ route('spp.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Pembayaran SPP </p>
                     </a>

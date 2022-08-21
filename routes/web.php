@@ -5,10 +5,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClearController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Master\KelasController;
 use App\Http\Controllers\Master\JurusanController;
 use App\Http\Controllers\Master\AngkatanController;
 use App\Http\Controllers\Master\SiswaController;
 use App\Http\Controllers\Transaksi\DSPController;
+use App\Http\Controllers\Transaksi\SPPController;
 
 Auth::routes();
 
@@ -79,7 +81,23 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/destroy/{id}', [RoleController::class, 'destroy'])->name('role.destroy')
             ->middleware(['role_or_permission:Developer|Delete-User Group']);
-    });;
+    });
+
+    Route::prefix('kelas')->group(function () {
+        Route::get('/', [KelasController::class, 'index'])->name('kelas.index');
+
+        Route::post('/get-data', [KelasController::class, 'getData']);
+
+        Route::get('/create', [KelasController::class, 'create'])->name('kelas.create');
+
+        Route::get('/edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
+
+        Route::post('/store', [KelasController::class, 'store'])->name('kelas.store');
+
+        Route::put('/update', [KelasController::class, 'update'])->name('kelas.update');
+
+        Route::get('/destroy/{id}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+    });
 
     Route::prefix('jurusan')->group(function () {
         Route::get('/', [JurusanController::class, 'index'])->name('jurusan.index');
@@ -138,11 +156,29 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/create', [DSPController::class, 'create'])->name('dsp.create');
 
-        Route::get('/detail/{id}', [DSPController::class, 'show'])->name('dsp.detail');
+        // Route::get('/detail/{id}', [DSPController::class, 'show'])->name('dsp.detail');
 
         Route::post('/store', [DSPController::class, 'store'])->name('dsp.store');
 
         Route::get('/destroy/{id}', [DSPController::class, 'destroy'])->name('dsp.destroy');
+    });
+
+    Route::prefix('spp')->group(function () {
+        Route::get('/', [SPPController::class, 'index'])->name('spp.index');
+
+        Route::post('/get-data', [SPPController::class, 'getData']);
+
+        Route::post('/get-siswa', [SPPController::class, 'getSiswa']);
+
+        Route::post('/get-payment', [SPPController::class, 'getPayment']);
+
+        Route::get('/create', [SPPController::class, 'create'])->name('spp.create');
+
+        Route::get('/detail/{id}', [SPPController::class, 'show'])->name('spp.detail');
+
+        Route::post('/store', [SPPController::class, 'store'])->name('spp.store');
+
+        Route::get('/destroy/{id}', [SPPController::class, 'destroy'])->name('spp.destroy');
     });
 
 });

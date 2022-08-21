@@ -7,33 +7,31 @@ use Illuminate\Http\Request;
 use App\Repositories\BaseRepository;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Siswa;
-use App\Models\Angkatan;
-use App\Models\Jurusan;
+use App\Models\Kelas;
 
-class SiswaController extends Controller
+class KelasController extends Controller
 {
     protected $model, $role;
 
-    public function __construct(Siswa $Siswa) {
-        $this->model = new BaseRepository($Siswa);
+    public function __construct(Kelas $Kelas) {
+        $this->model = new BaseRepository($Kelas);
         $this->middleware('auth');
     }
 
     public function index() {
-        return view('master.siswa.index');
+        return view('master.kelas.index');
     }
 
     public function getData() {
-        $data = Siswa::with('jurusan', 'angkatan')->orderBy('id', 'DESC')->get();
+        $data = Kelas::query()->orderBy('id', 'ASC');
         return DataTables::of($data)
         ->addColumn('Aksi', function ($data) {
 
             return view('layouts.component.action', [
                 'model' => $data,
-                'url_edit' => route('siswa.edit', $data->id),
-                'url_destroy' => route('siswa.destroy', $data->id),
-                'menu' => 'Siswa'
+                'url_edit' => route('kelas.edit', $data->id),
+                'url_destroy' => route('kelas.destroy', $data->id),
+                'menu' => 'Kelas'
             ]);
 
         })
@@ -44,59 +42,58 @@ class SiswaController extends Controller
 
     public function create() {
         try {
-            $angkatans = Angkatan::get();
-            $jurusans = Jurusan::get();
-            return view('master.siswa.create', compact('angkatans', 'jurusans'));
+            return view('master.kelas.create');
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         }
     }
 
     public function store(Request $request) {
-        // return $request;
         try {
             $data = $request->except(['_token', '_method', 'id']);
-            $siswa = $this->model->store($data);
+            $kelas = $this->model->store($data);
             Alert::toast($request->name.' Berhasil Disimpan', 'success');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
             return back();
         }
     }
 
+    public function show($id) {
+        //
+    }
+
     public function edit($id) {
         try {
             $data['detail'] = $this->model->find($id);
-            $angkatans = Angkatan::get();
-            $jurusans = Jurusan::get();
-            return view('master.siswa.create', compact('data', 'angkatans', 'jurusans'));
+            return view('master.kelas.create', compact('data'));
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         }
     }
 
     public function update(Request $request) {
         try {
             $data = $request->except(['_token', '_method', 'id']);
-            $siswa = $this->model->update($request->id, $data);
+            $kelas = $this->model->update($request->id, $data);
             Alert::toast($request->name.' Berhasil Disimpan', 'success');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         }
     }
 
     public function destroy($id) {
         try {
-            $siswa = $this->model->softDelete($id);
-            return response()->json($siswa, 200);
+            $kelas = $this->model->softDelete($id);
+            return response()->json($kelas, 200);
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('siswa.index');
+            return redirect()->route('kelas.index');
         }
     }
 }

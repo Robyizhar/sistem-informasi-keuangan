@@ -1,7 +1,7 @@
 <div class="text-center">
-    @if (isset($url_show))
-        <a href="{{ $url_show }}" class="btn-show" title="Detail">
-
+    @if (isset($url_detail))
+        <a href="{{ $url_detail }}" class="btn-show" title="Detail">
+            Detail
         </a>
     @endif
 

@@ -15,7 +15,10 @@ class CreatePembayaranSppsTable extends Migration
     {
         Schema::create('pembayaran_spps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('siswa_id');
+            $table->bigInteger('siswa_id');
+            $table->integer('kelas_id');
+            $table->string('semester');
+            $table->string('bulan');
             $table->string('total_payment');
             $table->timestamps();
 

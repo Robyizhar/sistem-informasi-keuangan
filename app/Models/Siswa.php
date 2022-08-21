@@ -21,4 +21,8 @@ class Siswa extends Model
     public function dsp() {
         return $this->hasMany(PembayaranDsp::class);
     }
+
+    public function spp() {
+        return $this->hasMany(PembayaranSpp::class);
+    }
 }

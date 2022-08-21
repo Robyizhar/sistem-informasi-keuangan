@@ -17,10 +17,12 @@
             <div class="form-group">
                 <label>Jurusan</label>
                 <select name="jurusan_id" class="form-control jurusan" id="jurusan">
-                    <option value="">Pilih Jurusan</option>
-                    @foreach ($jurusans as $jurusan)
-                        <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option>
-                    @endforeach
+                    @if (isset($data['siswa']))
+                        <option selected value="{{ $data['siswa']->jurusan->id }}">{{ $data['siswa']->jurusan->name }}</option>
+                    @else
+                        <option value="">Pilih Jurusan</option>
+                        @foreach ($data['jurusans'] as $jurusan) <option value="{{ $jurusan->id }}">{{ $jurusan->name }}</option> @endforeach
+                    @endif
                 </select>
             </div>
         </div>
@@ -29,10 +31,12 @@
             <div class="form-group">
                 <label>Angkatan</label>
                 <select name="angkatan_id" class="form-control angkatan" id="angkatan">
-                    <option value="">Pilih Angkatan</option>
-                    @foreach ($angkatans as $angkatan)
-                        <option value="{{ $angkatan->id }}">{{ $angkatan->name }}</option>
-                    @endforeach
+                    @if (isset($data['siswa']))
+                        <option selected value="{{ $data['siswa']->angkatan->id }}">{{ $data['siswa']->angkatan->name }}</option>
+                    @else
+                        <option value="">Pilih Angkatan</option>
+                        @foreach ($data['angkatans'] as $angkatan) <option value="{{ $angkatan->id }}">{{ $angkatan->name }}</option> @endforeach
+                    @endif
                 </select>
             </div>
         </div>
@@ -41,6 +45,16 @@
             <div class="form-group">
                 <label>Siswa</label>
                 <select name="siswa_id" class="form-control siswa" id="siswa">
+                    @isset($data['siswa'])
+                        <option
+                            value="{{ $data['siswa']->id }}"
+                            data-name="{{ $data['siswa']->name }}"
+                            data-address="{{ $data['siswa']->address }}"
+                            data-gender="{{ $data['siswa']->gender }}"
+                            data-nisn="{{ $data['siswa']->nisn }}"
+                            data-dsp="{{ $data['siswa']->angkatan->dsp_cost }}"
+                            data-rekap_dsp="{{ json_encode($data['siswa']->dsp) }}" >{{ $data['siswa']->nisn }}, {{ $data['siswa']->name }}</option>
+                    @endisset
                 </select>
             </div>
         </div>
@@ -91,7 +105,7 @@
         <div class="col-md-12">
             <div class="card card-secondary">
                 <div class="card-header">
-                    <h3 class="card-title dsp-label">Custom Elements</h3>
+                    <h3 class="card-title dsp-label"></h3>
                 </div>
                 <div class="card-body">
                     <table class="table">
@@ -104,7 +118,7 @@
                             </tr>
                         </thead>
                         <tbody class="rekap-pembayaran">
-                            
+
                         </tbody>
                         <tbody>
                             <tr>
@@ -135,9 +149,109 @@
 @endcomponent
 @endsection
 @push('script')
+
     <script>
 
         const actionUrl = `{{ url('dsp/get-siswa') }}`;
+
+        function numberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function getSiswa(angkatan_id, jurusan_id) {
+            $("#loading").show();
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: {
+                    angkatan_id: angkatan_id,
+                    jurusan_id: jurusan_id
+                },
+                success: function(data) {
+                    $("#siswa").empty();
+                    $('.rekap-pembayaran').empty();
+                    $('.total_pembayaran').html('0');
+                    $('.sisa_pembayaran').html('0');
+                    const siswa = (typeof data == "string") ? jQuery.parseJSON(data) : data;
+                    $("#siswa").append(`<option value="">Pilih Siswa</option>`);
+                    siswa.forEach(index => {
+                        let siswa_option = `<option
+                            value="${index.id}"
+                            data-name="${index.name}"
+                            data-address="${index.address}"
+                            data-gender="${index.gender}"
+                            data-nisn="${index.nisn}"
+                            data-dsp="${index.angkatan.dsp_cost}"
+                            data-rekap_dsp='${JSON.stringify(index.dsp)}'
+                            >${index.nipd}, ${index.name}, ${index.jurusan.code}, ${index.angkatan.code}</option>`;
+                        $("#siswa").append(siswa_option);
+                    });
+                    $("#loading").hide();
+                    $("#siswa").attr("disabled", false);
+                    $("#siswa").css("background-color", "#FFFF").css("cursor", "pointer");
+                }
+            });
+        }
+
+        function getPaymentInformation(data) {
+
+            $('.rekap-pembayaran').empty();
+            $('.total_pembayaran').html('0');
+            $('.sisa_pembayaran').html('0');
+
+            $('.siswa_id').val(data.siswa_id);
+            $('.name').val(data.name);
+            $('.address').val(data.address);
+            $('.gender').val(data.gender);
+            $('.nisn').val(data.nisn);
+            let total_dsp = parseInt(data.dsp);
+            $('.dsp').val('Rp. ' + numberWithCommas(parseInt(data.dsp)));
+            $('.dsp-label').html('Total Dana Sumbangan Pendidikan Rp. ' +numberWithCommas(parseInt(total_dsp)));
+            let rekap_dsp = data.rekap_dsp;
+            rekap_dsp = (typeof rekap_dsp == 'string') ? JSON.parse(rekap_dsp) : rekap_dsp;
+            let total_pembayaran = 0;
+            if (rekap_dsp.length > 0) {
+                console.log(data.rekap_dsp.length);
+                let number = 1;
+                rekap_dsp.forEach(index => {
+                    let row_dsp = `<tr>
+                        <th>${number}</th>
+                        <td>${number}</td>
+                        <td>${index.created_at}</td>
+                        <td>Rp. ${numberWithCommas(parseInt(index.total_payment))}</td>
+                    </tr>`;
+                    $('.rekap-pembayaran').append(row_dsp);
+                    total_pembayaran = total_pembayaran+parseInt(index.total_payment);
+                    number++;
+                });
+
+            }
+            $('.total_pembayaran').html(numberWithCommas(total_pembayaran))
+            let sisa_pembayaran = parseInt(total_dsp) - parseInt(total_pembayaran)
+            $('.sisa_pembayaran').html(numberWithCommas(sisa_pembayaran))
+            $('#sisa_pembayaran').val(sisa_pembayaran)
+        }
+    </script>
+
+    @isset($data['siswa'])
+        <script>
+            $(".total_payment").prop('readonly', false);
+            const data = {
+                siswa_id: $('#siswa').val(),
+                name: $('option:selected', '#siswa').data('name'),
+                address: $('option:selected', '#siswa').data('address'),
+                gender: $('option:selected', '#siswa').data('gender'),
+                nisn: $('option:selected', '#siswa').data('nisn'),
+                total_dsp: $('option:selected', '#siswa').data('total_dsp'),
+                dsp: $('option:selected', '#siswa').data('dsp'),
+                rekap_dsp: $('option:selected', '#siswa').data('rekap_dsp'),
+            }
+            getPaymentInformation(data)
+        </script>
+    @endisset
+
+    <script>
 
         const isNumber = (evt) => {
             evt = (evt) ? evt : window.event;
@@ -157,87 +271,21 @@
             return number_value;
         }
 
-        $('#angkatan').change(function (e) { 
+        $('#angkatan').change(function (e) {
             e.preventDefault();
             $(".total_payment").prop('readonly', true);
             let angkatan_id = $(this).val();
             let jurusan_id = $('#jurusan').val();
-
-            $("#loading").show();
-
-            $.ajax({
-                type: "POST",
-                url: actionUrl,
-                data: { 
-                    angkatan_id: angkatan_id, 
-                    jurusan_id: jurusan_id 
-                },
-                success: function(data) {
-                    $("#siswa").empty();
-                    $('.rekap-pembayaran').empty();
-                    $('.total_pembayaran').html('0');
-                    $('.sisa_pembayaran').html('0');
-                    const siswa = (typeof data == "string") ? jQuery.parseJSON(data) : data;
-                    $("#siswa").append(`<option value="">Pilih Siswa</option>`);
-                    siswa.forEach(index => {
-                        let siswa_option = `<option 
-                            value="${index.id}"
-                            data-name="${index.name}"
-                            data-address="${index.address}"
-                            data-gender="${index.gender}"
-                            data-nisn="${index.nisn}"
-                            data-dsp="${index.angkatan.dsp_cost}"
-                            data-rekap_dsp='${JSON.stringify(index.dsp)}'
-                            >${index.nipd}, ${index.name}, ${index.jurusan.code}, ${index.angkatan.code}</option>`;
-                        $("#siswa").append(siswa_option);
-                    });
-                    $("#loading").hide();
-                    $("#siswa").attr("disabled", false);
-                    $("#siswa").css("background-color", "#FFFF").css("cursor", "pointer");
-                }
-            });
+            getSiswa(angkatan_id, jurusan_id);
 
         });
 
-        $('#jurusan').change(function (e) { 
+        $('#jurusan').change(function (e) {
             e.preventDefault();
             $(".total_payment").prop('readonly', true);
             let jurusan_id = $(this).val();
             let angkatan_id = $('#angkatan').val();
-
-            $("#loading").show();
-
-            $.ajax({
-                type: "POST",
-                url: actionUrl,
-                data: { 
-                    angkatan_id: angkatan_id, 
-                    jurusan_id: jurusan_id 
-                },
-                success: function(data) {
-                    $("#siswa").empty();
-                    $('.rekap-pembayaran').empty();
-                    $('.total_pembayaran').html('0');
-                    $('.sisa_pembayaran').html('0');
-                    const siswa = (typeof data == "string") ? jQuery.parseJSON(data) : data;
-                    $("#siswa").append(`<option value="">Pilih Siswa</option>`);
-                    siswa.forEach(index => {
-                        let siswa_option = `<option 
-                            value="${index.id}"
-                            data-name="${index.name}"
-                            data-address="${index.address}"
-                            data-gender="${index.gender}"
-                            data-nisn="${index.nisn}"
-                            data-dsp="${index.angkatan.dsp_cost}"
-                            data-rekap_dsp='${JSON.stringify(index.dsp)}'
-                            >${index.nipd}, ${index.name}, ${index.jurusan.code}, ${index.angkatan.code}</option>`;
-                        $("#siswa").append(siswa_option);
-                    });
-                    $("#loading").hide();
-                    $("#siswa").attr("disabled", false);
-                    $("#siswa").css("background-color", "#FFFF").css("cursor", "pointer");
-                }
-            });
+            getSiswa(angkatan_id, jurusan_id)
 
         });
 
@@ -245,45 +293,27 @@
             e.preventDefault();
             $(".total_payment").prop('readonly', false);
             if ($(this).val() == "")
-                return false;                                
-            
+                return false;
+
             $('.rekap-pembayaran').empty();
             $('.total_pembayaran').html('0');
             $('.sisa_pembayaran').html('0');
 
-            $('.siswa_id').val($(this).val());
-            $('.name').val($('option:selected', this).data('name'));
-            $('.address').val($('option:selected', this).data('address'));
-            $('.gender').val($('option:selected', this).data('gender'));
-            $('.nisn').val($('option:selected', this).data('nisn'));
-            let total_dsp = parseInt($('option:selected', this).data('dsp'));
-            $('.dsp').val('Rp. ' + numberWithCommas(parseInt($('option:selected', this).data('dsp'))));
-            $('.dsp-label').html('Total Dana Sumbangan Pendidikan Rp. ' + total_dsp);
-            let rekap_dsp = $('option:selected', this).data('rekap_dsp');
-            rekap_dsp = (typeof rekap_dsp == 'string') ? JSON.parse(rekap_dsp) : rekap_dsp;
-            let total_pembayaran = 0;
-            if (rekap_dsp.length > 0) {
-                let number = 1;
-                rekap_dsp.forEach(index => {
-                    let row_dsp = `<tr>
-                        <th>${number}</th>
-                        <td>${number}</td>
-                        <td>${index.created_at}</td>
-                        <td>Rp. ${numberWithCommas(parseInt(index.total_payment))}</td>
-                    </tr>`;
-                    $('.rekap-pembayaran').append(row_dsp);
-                    total_pembayaran = total_pembayaran+parseInt(index.total_payment);
-                    number++;
-                });
-
+            const data = {
+                siswa_id: $(this).val(),
+                name: $('option:selected', this).data('name'),
+                address: $('option:selected', this).data('address'),
+                gender: $('option:selected', this).data('gender'),
+                nisn: $('option:selected', this).data('nisn'),
+                total_dsp: $('option:selected', this).data('total_dsp'),
+                dsp: $('option:selected', this).data('dsp'),
+                rekap_dsp: $('option:selected', this).data('rekap_dsp'),
             }
-            $('.total_pembayaran').html(numberWithCommas(total_pembayaran))
-            let sisa_pembayaran = parseInt(total_dsp) - parseInt(total_pembayaran)
-            $('.sisa_pembayaran').html(numberWithCommas(sisa_pembayaran))
-            $('#sisa_pembayaran').val(sisa_pembayaran)
+
+            getPaymentInformation(data)
         });
 
-        $('.total_payment').keyup(function (e) { 
+        $('.total_payment').keyup(function (e) {
             e.preventDefault();
             $('.limit_payment').remove();
             let limit_payment = $('#sisa_pembayaran').val()
@@ -296,17 +326,13 @@
             }
         });
 
-        function numberWithCommas(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
         $(document).ready(function () {
             let limit_payment = $('#sisa_pembayaran').val()
             $("#form-save-update").validate({
                 rules: {
                     name: { required: true },
-                    total_payment: { 
-                        required: true, 
+                    total_payment: {
+                        required: true,
                         max: function() {
                             return parseInt($('#sisa_pembayaran').val());
                         },
@@ -317,13 +343,13 @@
                 },
                 messages: {
                     name: { required: "pilih siswa" },
-                    total_payment: { 
-                        required: "masukan total pembayaran", 
+                    total_payment: {
+                        required: "masukan total pembayaran",
                         max: "melebihi maksimal sisa pembayaran " + limit_payment,
                         min: "pembayaran tidak valid "
                     },
-                }, 
-                ignore: "", 
+                },
+                ignore: "",
             });
 
             $("#form-save-update").submit(function( event ) {
@@ -331,4 +357,4 @@
             });
         });
     </script>
-@endpush 
+@endpush

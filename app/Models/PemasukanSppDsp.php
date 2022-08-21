@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class PemasukanSppDsp extends Model
 {
     use HasFactory;
-    protected $fillable = ['income_source', 'income_total', 'pembayaran_id'];
+    protected $fillable = ['income_source', 'income_total', 'pembayaran_id', 'pembayaran_dsp_id,', 'siswa_id'];
 }

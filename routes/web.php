@@ -187,10 +187,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/get-data', [PengeluaranSppDsp::class, 'getData']);
 
-        // Route::post('/get-siswa', [PengeluaranSppDsp::class, 'getSiswa']);
-
-        // Route::post('/get-payment', [PengeluaranSppDsp::class, 'getPayment']);
-
         Route::get('/create', [PengeluaranSppDsp::class, 'create'])->name('pengeluaran_spp_dsp.create');
 
         // Route::get('/detail/{id}', [PengeluaranSppDsp::class, 'show'])->name('pengeluaran_spp_dsp.detail');

@@ -19,7 +19,7 @@ class CreatePembayaranSppsTable extends Migration
             $table->integer('kelas_id');
             $table->string('semester');
             $table->string('bulan');
-            $table->string('total_payment');
+            $table->decimal('total_payment', 20, 2);
             $table->timestamps();
 
             $table->foreign('siswa_id')->references('id')->on('siswas');

@@ -18,7 +18,7 @@ class CreatePemasukanSppDspsTable extends Migration
             $table->bigInteger('pembayaran_dsp_id')->nullable(true);
             $table->bigInteger('siswa_id')->nullable(true);
             $table->string('income_source');
-            $table->string('income_total');
+            $table->decimal('income_total', 20, 2);
             $table->timestamps();
 
             $table->foreign('pembayaran_dsp_id')->references('id')->on('pembayaran_dsps');

@@ -83,6 +83,7 @@ class DSPController extends Controller
             if ($dsp) {
                 $this->income->store([
                     'pembayaran_dsp_id' => $dsp->id,
+                    'siswa_id' => $request->siswa_id,
                     'income_source' => 'dsp',
                     'income_total' => $data['total_payment']
                 ]);

@@ -16,7 +16,7 @@ class CreatePembayaranDspsTable extends Migration
         Schema::create('pembayaran_dsps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('siswa_id');
-            $table->string('total_payment');
+            $table->decimal('total_payment', 20, 2);
             $table->timestamps();
 
             $table->foreign('siswa_id')->references('id')->on('siswas');

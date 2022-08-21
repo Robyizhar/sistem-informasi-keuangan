@@ -16,9 +16,9 @@ class CreatePengeluaranSppDspsTable extends Migration
         Schema::create('pengeluaran_spp_dsps', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('unit_price');
-            $table->string('unit_quantity');
-            $table->string('unit_total_price');
+            $table->decimal('unit_price', 20, 2);
+            $table->decimal('unit_quantity', 20, 2);
+            $table->decimal('unit_total_price', 20, 2);
             $table->timestamps();
         });
     }

@@ -18,8 +18,8 @@ class CreateAngkatansTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('entry_year');
-            $table->string('dsp_cost');
-            $table->string('spp_cost');
+            $table->decimal('dsp_cost', 20, 2);
+            $table->decimal('spp_cost', 20, 2);
             $table->timestamps();
         });
     }

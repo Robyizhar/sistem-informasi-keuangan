@@ -74,3 +74,9 @@
         })
     });
 </script>
+<script>
+    $('.maintenance').click(function (e) {
+        e.preventDefault();
+        Swal.fire( 'Warning!', 'Fitur ini sedang maintenance.', 'warning' );
+    });
+</script>

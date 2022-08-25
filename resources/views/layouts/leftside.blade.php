@@ -61,6 +61,12 @@
                         <p> Pengeluaran SPP Dan DSP </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="maintenance nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p> Rencana Kegiatan dan Anggaran Sekolah </p>
+                    </a>
+                </li>
                 <li class="nav-header">MANAGEMANT USER</li>
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}" class="nav-link">

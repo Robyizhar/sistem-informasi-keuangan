@@ -58,13 +58,13 @@
                 <li class="nav-item">
                     <a href="{{ route('pengeluaran_spp_dsp.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p> Pengeluaran SPP Dan DSP </p>
+                        <p> Pengeluaran SPP / DSP </p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="maintenance nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p> Rencana Kegiatan dan Anggaran Sekolah </p>
+                        <p> Pengeluaran BOS </p>
                     </a>
                 </li>
                 <li class="nav-header">MANAGEMANT USER</li>

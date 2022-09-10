@@ -21,6 +21,20 @@
         @endif
     </div>
     <div class="form-group mb-3">
+        <label class="required">NIPD</label>
+        <input value="{{ !isset($data['detail']) ? old('nipd') : old('nipd', $data['detail']->nipd) }}" type="text" name="nipd" class="form-control mb-2 @error('nipd') is-invalid @enderror" placeholder="nipd" />
+        @if($errors->has('nipd'))
+            <div class="text-danger"> {{ $errors->first('nipd')}} </div>
+        @endif
+    </div>
+    <div class="form-group mb-3">
+        <label class="required">NISN</label>
+        <input value="{{ !isset($data['detail']) ? old('nisn') : old('nisn', $data['detail']->nisn) }}" type="text" name="nisn" class="form-control mb-2 @error('nisn') is-invalid @enderror" placeholder="nisn" />
+        @if($errors->has('nisn'))
+            <div class="text-danger"> {{ $errors->first('nisn')}} </div>
+        @endif
+    </div>
+    <div class="form-group mb-3">
         <label class="required">Alamat Siswa</label>
         <input type="hidden" value="{{ !isset($data['detail']) ? '' : $data['detail']->id }}" name="id">
         <input value="{{ !isset($data['detail']) ? old('address') : old('address', $data['detail']->address) }}" type="text" name="address" class="form-control mb-2 @error('address') is-invalid @enderror" placeholder="address" />

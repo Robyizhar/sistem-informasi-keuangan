@@ -13,7 +13,7 @@ class Siswa extends Model
     use SoftDeletes;
     use Blameable;
 
-    protected $fillable = ['address', 'name', 'gender', 'angkatan_id', 'jurusan_id', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['address', 'nipd', 'nisn', 'name', 'gender', 'angkatan_id', 'jurusan_id', 'created_by', 'updated_by', 'deleted_by'];
     protected $table = 'm_siswa';
 
     public function jurusan() {

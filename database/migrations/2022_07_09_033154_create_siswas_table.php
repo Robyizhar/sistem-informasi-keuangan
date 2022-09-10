@@ -16,11 +16,11 @@ class CreateSiswasTable extends Migration
         Schema::create('m_siswa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('nipd');
-            $table->string('nisn');
-            $table->text('address')->nullable();
+            $table->string('nipd')->nullable(true);
+            $table->string('nisn')->nullable(true);
+            $table->text('address')->nullable(true);
             $table->string('gender');
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable(true);
             $table->integer('angkatan_id');
             $table->integer('jurusan_id');
             $table->timestamps();

@@ -637,8 +637,6 @@ class SiswaSeeder extends Seeder
             'genap' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni']
         ];
 
-        // var_dump($years);
-
         $index = 0;
         foreach ($siswas as $siswa) {
             if (fmod($index, 3) == 0) {

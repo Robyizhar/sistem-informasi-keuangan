@@ -54,7 +54,6 @@ class SiswaController extends Controller
     }
 
     public function store(Request $request) {
-        // return $request;
         try {
             $data = $request->except(['_token', '_method', 'id']);
             $siswa = $this->model->store($data);

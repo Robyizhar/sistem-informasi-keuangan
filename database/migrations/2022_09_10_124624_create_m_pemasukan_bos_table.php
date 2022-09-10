@@ -18,7 +18,7 @@ class CreateMPemasukanBosTable extends Migration
             $table->year('year');
             $table->string('type');
             $table->enum('step', ['1', '2', '3']);
-            $table->decimal('received funds', 20, 2);
+            $table->decimal('received_funds', 20, 2);
             $table->timestamps();
             $table->softDeletes();
             $table->smallInteger('created_by')->nullable(true);

@@ -7,13 +7,19 @@ use Illuminate\Http\Request;
 use App\Repositories\BaseRepository;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Angkatan;
+use App\Models\PemasukanBos;
 
 class PemasukanBosController extends Controller
 {
+    protected $model, $role;
+
+    public function __construct(PemasukanBos $PemasukanBos) {
+        $this->model = new BaseRepository($PemasukanBos);
+        $this->middleware('auth');
+    }
 
     public function index() {
-        //
+        return view('master.pemasukan_bos.index');
     }
 
     public function create() {

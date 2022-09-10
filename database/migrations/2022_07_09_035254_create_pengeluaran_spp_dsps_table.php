@@ -20,6 +20,10 @@ class CreatePengeluaranSppDspsTable extends Migration
             $table->decimal('unit_quantity', 20, 2);
             $table->decimal('unit_total_price', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
+            $table->smallInteger('created_by')->nullable(true);
+            $table->smallInteger('updated_by')->nullable(true);
+            $table->smallInteger('deleted_by')->nullable(true);
         });
     }
 

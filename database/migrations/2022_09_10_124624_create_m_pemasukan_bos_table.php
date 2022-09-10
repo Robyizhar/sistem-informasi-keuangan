@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSiswasTable extends Migration
+class CreateMPemasukanBosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateSiswasTable extends Migration
      */
     public function up()
     {
-        Schema::create('m_siswa', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('nipd');
-            $table->string('nisn');
-            $table->text('address')->nullable();
-            $table->string('gender');
-            $table->string('phone')->nullable();
-            $table->integer('angkatan_id');
-            $table->integer('jurusan_id');
+        Schema::create('m_pemasukan_bos', function (Blueprint $table) {
+            $table->id();
+            $table->year('year');
+            $table->string('type');
+            $table->enum('step', ['1', '2', '3']);
+            $table->decimal('received funds', 20, 2);
             $table->timestamps();
             $table->softDeletes();
             $table->smallInteger('created_by')->nullable(true);
@@ -38,6 +34,6 @@ class CreateSiswasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('siswas');
+        Schema::dropIfExists('m_pemasukan_bos');
     }
 }

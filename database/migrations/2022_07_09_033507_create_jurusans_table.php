@@ -18,6 +18,10 @@ class CreateJurusansTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
+            $table->smallInteger('created_by')->nullable(true);
+            $table->smallInteger('updated_by')->nullable(true);
+            $table->smallInteger('deleted_by')->nullable(true);
         });
     }
 

@@ -21,6 +21,10 @@ class CreateAngkatansTable extends Migration
             $table->decimal('dsp_cost', 20, 2);
             $table->decimal('spp_cost', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
+            $table->smallInteger('created_by')->nullable(true);
+            $table->smallInteger('updated_by')->nullable(true);
+            $table->smallInteger('deleted_by')->nullable(true);
         });
     }
 

@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PembayaranSpp extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = ['siswa_id', 'total_payment', 'kelas_id', 'semester', 'bulan'];
     protected $table = 't_pembayaran_spp';
     public function siswa() {

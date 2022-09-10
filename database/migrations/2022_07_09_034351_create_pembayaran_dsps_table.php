@@ -18,6 +18,10 @@ class CreatePembayaranDspsTable extends Migration
             $table->integer('siswa_id');
             $table->decimal('total_payment', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
+            $table->smallInteger('created_by')->nullable(true);
+            $table->smallInteger('updated_by')->nullable(true);
+            $table->smallInteger('deleted_by')->nullable(true);
 
             // $table->foreign('siswa_id')->references('id')->on('siswas');
         });

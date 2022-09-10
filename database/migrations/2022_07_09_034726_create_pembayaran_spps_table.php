@@ -13,7 +13,7 @@ class CreatePembayaranSppsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembayaran_spps', function (Blueprint $table) {
+        Schema::create('t_pembayaran_spp', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('siswa_id');
             $table->integer('kelas_id');
@@ -22,7 +22,7 @@ class CreatePembayaranSppsTable extends Migration
             $table->decimal('total_payment', 20, 2);
             $table->timestamps();
 
-            $table->foreign('siswa_id')->references('id')->on('siswas');
+            // $table->foreign('siswa_id')->references('id')->on('siswas');
         });
     }
 

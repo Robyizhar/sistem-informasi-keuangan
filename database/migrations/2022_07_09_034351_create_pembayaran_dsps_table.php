@@ -13,13 +13,13 @@ class CreatePembayaranDspsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembayaran_dsps', function (Blueprint $table) {
+        Schema::create('t_pembayaran_dsp', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('siswa_id');
             $table->decimal('total_payment', 20, 2);
             $table->timestamps();
 
-            $table->foreign('siswa_id')->references('id')->on('siswas');
+            // $table->foreign('siswa_id')->references('id')->on('siswas');
         });
     }
 

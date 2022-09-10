@@ -13,7 +13,7 @@ class CreatePemasukanSppDspsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pemasukan_spp_dsps', function (Blueprint $table) {
+        Schema::create('t_pemasukan_spp_dsp', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('pembayaran_dsp_id')->nullable(true);
             $table->bigInteger('siswa_id')->nullable(true);
@@ -21,8 +21,8 @@ class CreatePemasukanSppDspsTable extends Migration
             $table->decimal('income_total', 20, 2);
             $table->timestamps();
 
-            $table->foreign('pembayaran_dsp_id')->references('id')->on('pembayaran_dsps');
-            $table->foreign('siswa_id')->references('id')->on('siswas');
+            // $table->foreign('pembayaran_dsp_id')->references('id')->on('pembayaran_dsps');
+            // $table->foreign('siswa_id')->references('id')->on('siswas');
         });
     }
 

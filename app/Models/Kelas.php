@@ -10,7 +10,7 @@ class Kelas extends Model
     use HasFactory;
 
     protected $fillable = ['code', 'name'];
-
+    protected $table = 'm_kelas';
     public function spp_payment() {
         return $this->hasMany(PembayaranSpp::class, 'kelas_id', 'id');
 	}

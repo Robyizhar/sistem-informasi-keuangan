@@ -13,7 +13,7 @@ class CreatePengeluaranSppDspsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pengeluaran_spp_dsps', function (Blueprint $table) {
+        Schema::create('t_pengeluaran_spp_dsp', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->decimal('unit_price', 20, 2);

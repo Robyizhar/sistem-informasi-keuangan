@@ -13,7 +13,7 @@ class CreateSiswasTable extends Migration
      */
     public function up()
     {
-        Schema::create('siswas', function (Blueprint $table) {
+        Schema::create('m_siswa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('nipd');

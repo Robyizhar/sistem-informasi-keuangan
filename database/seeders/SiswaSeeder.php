@@ -18,7 +18,7 @@ class SiswaSeeder extends Seeder
     public function run()
     {
 
-        DB::table('pembayaran_spps')->delete();
+        DB::table('t_pembayaran_spp')->delete();
 
         $siswas = [
             ["id" => 1, "name" => "ABDUL HARIS", "address" => "KP CIWAHANG, RT 	, RW 	SUKAMANAH	Kec. Malangbong	", "phone" => "", "gender" => "Laki - laki"],

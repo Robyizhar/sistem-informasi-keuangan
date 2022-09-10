@@ -10,7 +10,7 @@ class PembayaranSpp extends Model
 {
     use HasFactory;
     protected $fillable = ['siswa_id', 'total_payment', 'kelas_id', 'semester', 'bulan'];
-
+    protected $table = 't_pembayaran_spp';
     public function siswa() {
         return $this->belongsTo(Siswa::class);
 	}

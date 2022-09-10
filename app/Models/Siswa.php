@@ -9,7 +9,7 @@ class Siswa extends Model
 {
     use HasFactory;
     protected $fillable = ['address', 'name', 'gender', 'angkatan_id', 'jurusan_id'];
-
+    protected $table = 'm_siswa';
     public function jurusan() {
         return $this->belongsTo(Jurusan::class);
 	}

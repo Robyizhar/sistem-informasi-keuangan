@@ -668,7 +668,8 @@ class SiswaSeeder extends Seeder
 
                 for ($i=0; $i < sizeOf($years['ganjil']); $i++) {
 
-                    PembayaranSpp::create(['siswa_id' => $siswa['id'],
+                    PembayaranSpp::create([
+                        'siswa_id' => $siswa['id'],
                         'kelas_id' => $key->id,
                         'bulan' => $years['ganjil'][$i],
                         'semester' => 'ganjil',

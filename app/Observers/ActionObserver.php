@@ -21,7 +21,7 @@ class ActionObserver {
 
     public function deleting(Model $model) {
         if (Auth::check()) {
-            $model->deleted_by = auth()->id();
+            $model->deleted_by = Auth::user()->id;
         }
     }
 

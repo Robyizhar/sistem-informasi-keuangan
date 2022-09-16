@@ -10,6 +10,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Siswa;
 use App\Models\Angkatan;
 use App\Models\Jurusan;
+use App\Models\Kelas;
+use App\Models\PembayaranSpp;
 
 class SiswaController extends Controller
 {
@@ -57,6 +59,38 @@ class SiswaController extends Controller
         try {
             $data = $request->except(['_token', '_method', 'id']);
             $siswa = $this->model->store($data);
+
+            $kelas = Kelas::get();
+
+            $years = [
+                'ganjil' => ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                'genap' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni']
+            ];
+
+            foreach ($kelas as $key) {
+
+                for ($i=0; $i < sizeOf($years['ganjil']); $i++) {
+                    PembayaranSpp::create([
+                        'siswa_id' => $siswa->id,
+                        'kelas_id' => $key->id,
+                        'bulan' => $years['ganjil'][$i],
+                        'semester' => 'ganjil',
+                        'total_payment' => '0'
+                    ]);
+                }
+
+                for ($i=0; $i < sizeOf($years['genap']); $i++) {
+                    PembayaranSpp::create([
+                        'siswa_id' => $siswa->id,
+                        'kelas_id' => $key->id,
+                        'bulan' => $years['genap'][$i],
+                        'semester' => 'genap',
+                        'total_payment' => '0'
+                    ]);
+                }
+
+            }
+
             Alert::toast($request->name.' Berhasil Disimpan', 'success');
             return redirect()->route('siswa.index');
         } catch (\Throwable $e) {

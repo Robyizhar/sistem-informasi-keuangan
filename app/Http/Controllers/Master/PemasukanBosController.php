@@ -22,6 +22,24 @@ class PemasukanBosController extends Controller
         return view('master.pemasukan_bos.index');
     }
 
+    public function getData() {
+        $data = PemasukanBos::orderBy('step', 'ASC')->get();
+        return DataTables::of($data)
+        ->addColumn('Aksi', function ($data) {
+
+            return view('layouts.component.action', [
+                'model' => $data,
+                'url_edit' => route('pemasukan_bos.edit', $data->id),
+                'url_destroy' => route('pemasukan_bos.destroy', $data->id),
+                'menu' => 'Bos'
+            ]);
+
+        })
+        ->addIndexColumn()
+        ->rawColumns(['Aksi'])
+        ->make(true);
+    }
+
     public function create() {
         //
     }

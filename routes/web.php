@@ -12,6 +12,7 @@ use App\Http\Controllers\Master\SiswaController;
 use App\Http\Controllers\Transaksi\DSPController;
 use App\Http\Controllers\Transaksi\SPPController;
 use App\Http\Controllers\Transaksi\PengeluaranSppDsp;
+use App\Http\Controllers\Master\PemasukanBosController;
 
 Auth::routes();
 
@@ -194,6 +195,22 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [PengeluaranSppDsp::class, 'store'])->name('pengeluaran_spp_dsp.store');
 
         // Route::get('/destroy/{id}', [PengeluaranSppDsp::class, 'destroy'])->name('pengeluaran_spp_dsp.destroy');
+    });
+
+    Route::prefix('pemasukan_bos')->group(function () {
+        Route::get('/', [PemasukanBosController::class, 'index'])->name('pemasukan_bos.index');
+
+        Route::post('/get-data', [PemasukanBosController::class, 'getData']);
+
+        Route::get('/create', [PemasukanBosController::class, 'create'])->name('pemasukan_bos.create');
+
+        Route::get('/edit/{id}', [PemasukanBosController::class, 'edit'])->name('pemasukan_bos.edit');
+
+        Route::get('/detail/{id}', [PemasukanBosController::class, 'show'])->name('pemasukan_bos.detail');
+
+        Route::post('/store', [PemasukanBosController::class, 'store'])->name('pemasukan_bos.store');
+
+        Route::get('/destroy/{id}', [PemasukanBosController::class, 'destroy'])->name('pemasukan_bos.destroy');
     });
 
 });

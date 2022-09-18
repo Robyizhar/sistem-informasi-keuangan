@@ -23,7 +23,7 @@ class CreatePembayaranDspsTable extends Migration
             $table->smallInteger('updated_by')->nullable(true);
             $table->smallInteger('deleted_by')->nullable(true);
 
-            // $table->foreign('siswa_id')->references('id')->on('siswas');
+            // $table->foreign('siswa_id')->references('id')->on('m_siswa');
         });
     }
 

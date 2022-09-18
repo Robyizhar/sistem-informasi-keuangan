@@ -206,9 +206,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/edit/{id}', [PemasukanBosController::class, 'edit'])->name('pemasukan_bos.edit');
 
-        Route::get('/detail/{id}', [PemasukanBosController::class, 'show'])->name('pemasukan_bos.detail');
-
         Route::post('/store', [PemasukanBosController::class, 'store'])->name('pemasukan_bos.store');
+
+        Route::put('/update', [PemasukanBosController::class, 'update'])->name('pemasukan_bos.update');
 
         Route::get('/destroy/{id}', [PemasukanBosController::class, 'destroy'])->name('pemasukan_bos.destroy');
     });

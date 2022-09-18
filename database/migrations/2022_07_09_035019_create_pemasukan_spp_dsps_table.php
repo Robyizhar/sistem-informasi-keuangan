@@ -25,8 +25,8 @@ class CreatePemasukanSppDspsTable extends Migration
             $table->smallInteger('updated_by')->nullable(true);
             $table->smallInteger('deleted_by')->nullable(true);
 
-            // $table->foreign('pembayaran_dsp_id')->references('id')->on('pembayaran_dsps');
-            // $table->foreign('siswa_id')->references('id')->on('siswas');
+            // $table->foreign('pembayaran_dsp_id')->references('id')->on('t_pembayaran_dsp');
+            // $table->foreign('siswa_id')->references('id')->on('m_siswa');
         });
     }
 

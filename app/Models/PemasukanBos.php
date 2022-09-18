@@ -14,6 +14,6 @@ class PemasukanBos extends Model
     use Blameable;
 
     protected $table = 'm_pemasukan_bos';
-    protected $fillable = ['year', 'type', 'step,', 'received_funds', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['year', 'type', 'step', 'received_funds', 'created_by', 'updated_by', 'deleted_by'];
 
 }

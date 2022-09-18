@@ -18,10 +18,6 @@
 @push('script')
 <script>
 
-function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 $(document).ready( function () {
     let datatable = $('#state-saving-datatable').DataTable({
         responsive: true,

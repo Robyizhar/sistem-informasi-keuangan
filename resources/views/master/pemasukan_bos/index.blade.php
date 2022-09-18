@@ -35,7 +35,11 @@ $(document).ready( function () {
             {data: 'step', name: 'step'},
             {data: 'type', name: 'type'},
             {data: 'year', name: 'year'},
-            {data: 'received_funds', name: 'received_funds'},
+            {
+                "mRender": function ( data, type, row ) {
+                    return numberWithCommas(row.received_funds);
+                }
+            },
             {data: 'Aksi', name: 'Aksi'}
 
         ]

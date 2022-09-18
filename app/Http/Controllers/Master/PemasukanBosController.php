@@ -41,11 +41,26 @@ class PemasukanBosController extends Controller
     }
 
     public function create() {
-        //
+        return view('master.pemasukan_bos.create');
     }
 
     public function store(Request $request) {
-        //
+        try {
+            $data = $request->except(['_token', '_method', 'id']);
+            $recent_data = PemasukanBos::where('year', $request->year)->where('step', $request->step)->first();
+            if(!empty($recent_data)) {
+                Alert::toast('Step '.$request->step.' Tahun '.$request->year.' Sudah ada', 'error');
+                return back();
+            }
+
+            $this->model->store($data);
+            Alert::toast('Pemasukan Bos Berhasil Disimpan', 'success');
+
+            return redirect()->route('pemasukan_bos.index');
+        } catch (\Throwable $e) {
+            Alert::toast($e->getMessage(), 'error');
+            return back();
+        }
     }
 
     public function show($id) {
@@ -53,11 +68,25 @@ class PemasukanBosController extends Controller
     }
 
     public function edit($id) {
-        //
+        try {
+            $data['detail'] = $this->model->find($id);
+            return view('master.pemasukan_bos.create', compact('data'));
+        } catch (\Throwable $e) {
+            Alert::toast($e->getMessage(), 'error');
+            return redirect()->route('pemasukan_bos.index');
+        }
     }
 
-    public function update(Request $request, $id) {
-        //
+    public function update(Request $request) {
+        try {
+            $data = $request->except(['_token', '_method', 'id']);
+            $pemasukan_bos = $this->model->update($request->id, $data);
+            Alert::toast('Pemasukan Bos Berhasil Diupdate', 'success');
+            return redirect()->route('pemasukan_bos.index');
+        } catch (\Throwable $e) {
+            Alert::toast($e->getMessage(), 'error');
+            return redirect()->route('pemasukan_bos.index');
+        }
     }
 
     public function destroy($id) {

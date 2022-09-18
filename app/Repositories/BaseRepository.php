@@ -30,13 +30,13 @@ class BaseRepository implements BaseRepositoryInterface {
         return $this->model->find($id);
     }
 
-    public function findByParam($column, $param) {
-        return $this->model->where($column, $param)->firstOrFail();
-    }
+    // public function findByParam($column, $params) {
+    //     // return $this->model->where($column, $params)->firstOrFail();
+    // }
 
-    public function findByParams($column, $param) {
-        return $this->model->where($column, $param)->get();
-    }
+    // public function findByParams($column, $params) {
+    //     // return $this->model->where($column, $params)->get();
+    // }
 
     public function store($attributes, $isFile = false, $field = null, $folder = null) {
         if ($isFile == true) {

@@ -48,13 +48,13 @@ class DSPController extends Controller
     public function getSiswa(Request $request) {
         try {
             $siswas = Siswa::with('angkatan', 'jurusan', 'dsp')
-            ->when($request->jurusan_id != '', function($query) use ($request){
-                return $query->where('jurusan_id', $request->jurusan_id);
-            })
-            ->when($request->angkatan_id != '', function($query) use ($request){
-                return $query->where('angkatan_id', $request->angkatan_id);
-            })
-            ->orderBy('id', 'DESC')->get();
+                ->when($request->jurusan_id != '', function($query) use ($request){
+                    return $query->where('jurusan_id', $request->jurusan_id);
+                })
+                ->when($request->angkatan_id != '', function($query) use ($request){
+                    return $query->where('angkatan_id', $request->angkatan_id);
+                })
+                ->orderBy('id', 'DESC')->get();
             return response()->json($siswas, 200);
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 400);

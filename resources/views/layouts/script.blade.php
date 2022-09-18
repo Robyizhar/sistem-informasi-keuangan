@@ -79,4 +79,7 @@
         e.preventDefault();
         Swal.fire( 'Warning!', 'Fitur ini sedang maintenance.', 'warning' );
     });
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 </script>

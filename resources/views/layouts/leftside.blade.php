@@ -48,6 +48,12 @@
                         <p> Pemasukan Bos </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('golongan-rkas.index') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p> Gol Pengaluaran (RKAS) </p>
+                    </a>
+                </li>
                 <li class="nav-header">TRANSAKSI</li>
                 <li class="nav-item">
                     <a href="{{ route('dsp.index') }}" class="nav-link">
@@ -70,7 +76,7 @@
                 <li class="nav-item">
                     <a href="#" class="maintenance nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p> Pengeluaran BOS </p>
+                        <p> RKAS </p>
                     </a>
                 </li>
                 <li class="nav-header">MANAGEMANT USER</li>

@@ -13,6 +13,7 @@ use App\Http\Controllers\Transaksi\DSPController;
 use App\Http\Controllers\Transaksi\SPPController;
 use App\Http\Controllers\Transaksi\PengeluaranSppDsp;
 use App\Http\Controllers\Master\PemasukanBosController;
+use App\Http\Controllers\Master\GolonganRKASController;
 
 Auth::routes();
 
@@ -163,6 +164,22 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [DSPController::class, 'store'])->name('dsp.store');
 
         Route::get('/destroy/{id}', [DSPController::class, 'destroy'])->name('dsp.destroy');
+    });
+
+    Route::prefix('golongan-rkas')->group(function () {
+        Route::get('/', [GolonganRKASController::class, 'index'])->name('golongan-rkas.index');
+
+        Route::post('/get-data', [GolonganRKASController::class, 'getData']);
+
+        Route::get('/create', [GolonganRKASController::class, 'create'])->name('golongan-rkas.create');
+
+        Route::get('/edit/{id}', [GolonganRKASController::class, 'edit'])->name('golongan-rkas.edit');
+
+        Route::post('/store', [GolonganRKASController::class, 'store'])->name('golongan-rkas.store');
+
+        Route::put('/update', [GolonganRKASController::class, 'update'])->name('golongan-rkas.update');
+
+        Route::get('/destroy/{id}', [GolonganRKASController::class, 'destroy'])->name('golongan-rkas.destroy');
     });
 
     Route::prefix('spp')->group(function () {

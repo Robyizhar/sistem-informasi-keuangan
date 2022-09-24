@@ -15,10 +15,10 @@ class AngkatanSeeder extends Seeder
     public function run()
     {
         Angkatan::updateOrCreate(
-            ['id' => 1], 
+            ['id' => 1],
             [
-                'code' => '2020', 
-                'entry_year' => '2020', 
+                'code' => '2020',
+                'entry_year' => '2020',
                 'name' => 'Angkatan 2020',
                 'dsp_cost' => '3500000',
                 'spp_cost' => '50000'
@@ -26,9 +26,9 @@ class AngkatanSeeder extends Seeder
         );
 
         Angkatan::updateOrCreate(
-            ['id' => 2], 
+            ['id' => 2],
             [
-                'code' => '2021', 
+                'code' => '2021',
                 'entry_year' => '2021',
                 'name' => 'Angkatan 2021',
                 'dsp_cost' => '3500000',
@@ -37,13 +37,24 @@ class AngkatanSeeder extends Seeder
         );
 
         Angkatan::updateOrCreate(
-            ['id' => 3], 
+            ['id' => 3],
             [
-                'code' => '2022', 
+                'code' => '2022',
                 'entry_year' => '2022',
                 'name' => 'Angkatan 2022',
                 'dsp_cost' => '3500000',
                 'spp_cost' => '100000'
+            ]
+        );
+
+        Angkatan::updateOrCreate(
+            ['id' => 4],
+            [
+                'code' => '2023',
+                'entry_year' => '2023',
+                'name' => 'Angkatan 2023',
+                'dsp_cost' => '4500000',
+                'spp_cost' => '120000'
             ]
         );
     }

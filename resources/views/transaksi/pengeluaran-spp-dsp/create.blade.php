@@ -5,7 +5,7 @@
 @section('content')
 @component('layouts.component.form')
     @slot('isfile', false)
-    @slot('action', !isset($data['detail']) ? route('pengeluaran_spp_dsp.store') : route('pengeluaran_spp_dsp.update'))
+    @slot('action', !isset($data['detail']) ? route('pengeluaran-spp-dsp.store') : route('pengeluaran-spp-dsp.update'))
     @isset ($data['detail'])
         @slot('method','PUT')
     @else

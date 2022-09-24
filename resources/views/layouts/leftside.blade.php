@@ -68,7 +68,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('pengeluaran_spp_dsp.index') }}" class="nav-link">
+                    <a href="{{ route('pengeluaran-spp-dsp.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Pengeluaran SPP / DSP </p>
                     </a>

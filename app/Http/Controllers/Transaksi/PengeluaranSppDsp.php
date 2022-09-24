@@ -22,7 +22,7 @@ class PengeluaranSppDsp extends Controller
     }
 
     public function index(Request $request){
-        return view('transaksi.pengeluaran_spp_dsp.index');
+        return view('transaksi.pengeluaran-spp-dsp.index');
     }
 
     public function getData() {
@@ -32,7 +32,7 @@ class PengeluaranSppDsp extends Controller
 
             return view('layouts.component.action', [
                 'model' => $data,
-                'url_detail' => url('pengeluaran_spp_dsp/create?id='.$data->id),
+                'url_detail' => url('pengeluaran-spp-dsp/create?id='.$data->id),
                 'menu' => 'PengeluaranSppDsp'
             ]);
 
@@ -49,11 +49,11 @@ class PengeluaranSppDsp extends Controller
             $data['income'] = PemasukanSppDsp::sum('income_total');
             $data['expenditure'] = Pengeluaran::sum('unit_total_price');
 
-            return view('transaksi.pengeluaran_spp_dsp.create', compact('data'));
+            return view('transaksi.pengeluaran-spp-dsp.create', compact('data'));
         } catch (\Throwable $e) {
 
             Alert::toast($e->getMessage(), 'error');
-            return redirect()->route('pengeluaran_spp_dsp.index');
+            return redirect()->route('pengeluaran-spp-dsp.index');
         }
     }
 
@@ -65,7 +65,7 @@ class PengeluaranSppDsp extends Controller
             $this->model->store($data);
             Alert::toast('Pembayaran '.$request->name.' Berhasil Disimpan', 'success');
             DB::commit();
-            return redirect()->route('pengeluaran_spp_dsp.index');
+            return redirect()->route('pengeluaran-spp-dsp.index');
         } catch (\Throwable $e) {
             DB::rollback();
             Alert::toast($e->getMessage(), 'error');

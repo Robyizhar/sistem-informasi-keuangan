@@ -8,6 +8,8 @@ use App\Repositories\BaseRepository;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\GolonganRkas;
+use App\Models\SubGolonganRkas;
+use Illuminate\Support\Facades\DB;
 
 class GolonganRKASController extends Controller {
 
@@ -50,12 +52,24 @@ class GolonganRKASController extends Controller {
     }
 
     public function store(Request $request) {
+
         try {
             $data = $request->except(['_token', '_method', 'id']);
+            DB::beginTransaction();
             $golongan_rkas = $this->model->store($data);
+            if ($golongan_rkas && !empty($request->sub_golongan)) {
+                for ($i=0; $i < sizeOf($request->sub_golongan); $i++) {
+                    SubGolonganRkas::create([
+                        'golongan_rkas_id' => $golongan_rkas->id,
+                        'name' => $request->sub_golongan[$i]
+                    ]);
+                }
+            }
+            DB::commit();
             Alert::toast($request->name.' Berhasil Disimpan', 'success');
             return redirect()->route('golongan-rkas.index');
         } catch (\Throwable $e) {
+            DB::rollback();
             Alert::toast($e->getMessage(), 'error');
             return back();
         }

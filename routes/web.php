@@ -200,18 +200,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/destroy/{id}', [SPPController::class, 'destroy'])->name('spp.destroy');
     });
 
-    Route::prefix('pengeluaran_spp_dsp')->group(function () {
-        Route::get('/', [PengeluaranSppDsp::class, 'index'])->name('pengeluaran_spp_dsp.index');
+    Route::prefix('pengeluaran-spp-dsp')->group(function () {
+        Route::get('/', [PengeluaranSppDsp::class, 'index'])->name('pengeluaran-spp-dsp.index');
 
         Route::post('/get-data', [PengeluaranSppDsp::class, 'getData']);
 
-        Route::get('/create', [PengeluaranSppDsp::class, 'create'])->name('pengeluaran_spp_dsp.create');
+        Route::get('/create', [PengeluaranSppDsp::class, 'create'])->name('pengeluaran-spp-dsp.create');
 
-        // Route::get('/detail/{id}', [PengeluaranSppDsp::class, 'show'])->name('pengeluaran_spp_dsp.detail');
+        // Route::get('/detail/{id}', [PengeluaranSppDsp::class, 'show'])->name('pengeluaran-spp-dsp.detail');
 
-        Route::post('/store', [PengeluaranSppDsp::class, 'store'])->name('pengeluaran_spp_dsp.store');
+        Route::post('/store', [PengeluaranSppDsp::class, 'store'])->name('pengeluaran-spp-dsp.store');
 
-        // Route::get('/destroy/{id}', [PengeluaranSppDsp::class, 'destroy'])->name('pengeluaran_spp_dsp.destroy');
+        // Route::get('/destroy/{id}', [PengeluaranSppDsp::class, 'destroy'])->name('pengeluaran-spp-dsp.destroy');
     });
 
     Route::prefix('pemasukan_bos')->group(function () {

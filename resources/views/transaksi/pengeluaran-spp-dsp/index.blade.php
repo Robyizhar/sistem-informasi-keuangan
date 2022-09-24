@@ -4,7 +4,7 @@
 @endpush
 @section('content')
     @component('layouts.component.datatable')
-        @slot('action', route('pengeluaran_spp_dsp.create'))
+        @slot('action', route('pengeluaran-spp-dsp.create'))
         @slot('content')
             <th width="5%">No</th>
             <th>Nama Pengeluaran</th>
@@ -32,7 +32,7 @@ $(document).ready( function () {
         method: "POST",
         sPaginationType: "full_numbers",
         ajax: {
-            url: "{!! url('pengeluaran_spp_dsp/get-data') !!}",
+            url: "{!! url('pengeluaran-spp-dsp/get-data') !!}",
             type: "POST",
             dataType: "JSON"
         },

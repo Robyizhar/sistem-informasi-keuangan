@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="maintenance nav-link">
+                    <a href="{{ route('rkas.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> RKAS </p>
                     </a>
@@ -87,7 +87,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('role.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Golongan User</p>
                     </a>

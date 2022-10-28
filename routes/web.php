@@ -9,11 +9,12 @@ use App\Http\Controllers\Master\KelasController;
 use App\Http\Controllers\Master\JurusanController;
 use App\Http\Controllers\Master\AngkatanController;
 use App\Http\Controllers\Master\SiswaController;
+use App\Http\Controllers\Master\PemasukanBosController;
+use App\Http\Controllers\Master\GolonganRKASController;
 use App\Http\Controllers\Transaksi\DSPController;
 use App\Http\Controllers\Transaksi\SPPController;
 use App\Http\Controllers\Transaksi\PengeluaranSppDsp;
-use App\Http\Controllers\Master\PemasukanBosController;
-use App\Http\Controllers\Master\GolonganRKASController;
+use App\Http\Controllers\Transaksi\RKASController;
 
 Auth::routes();
 
@@ -228,6 +229,20 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', [PemasukanBosController::class, 'update'])->name('pemasukan_bos.update');
 
         Route::get('/destroy/{id}', [PemasukanBosController::class, 'destroy'])->name('pemasukan_bos.destroy');
+    });
+
+    Route::prefix('rkas')->group(function () {
+        Route::get('/', [RKASController::class, 'index'])->name('rkas.index');
+
+        Route::post('/get-data', [RKASController::class, 'getData']);
+
+        Route::get('/create', [RKASController::class, 'create'])->name('rkas.create');
+
+        // Route::get('/detail/{id}', [RKASController::class, 'show'])->name('rkas.detail');
+
+        Route::post('/store', [RKASController::class, 'store'])->name('rkas.store');
+
+        // Route::get('/destroy/{id}', [RKASController::class, 'destroy'])->name('rkas.destroy');
     });
 
 });

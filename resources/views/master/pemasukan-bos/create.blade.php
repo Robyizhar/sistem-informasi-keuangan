@@ -56,6 +56,7 @@
         </td>
 		<td class="text-center">
 			<input required readonly class="form-control form-white text-left sub_name" type="text" name="sub[0][name]" autocomplete="off" />
+			<input readonly class="form-control form-white text-left sub_id" type="hidden" name="sub[0][id]" autocomplete="off" />
         </td>
 		<td class="text-center">
 			<input required class="form-control form-white text-left sub_received_funds withseparator" type="text" name="sub[0][received_funds]" autocomplete="off" />
@@ -67,7 +68,7 @@
 			<input required class="form-control form-white text-left sub_end_date" type="date" name="sub[0][end_date]" autocomplete="off" />
         </td>
         <td class="action-buton">
-            <a class='btn btn-sm btn-danger removesub' type='button'>HAPUS</a>
+            <button class='btn btn-sm btn-danger removesub' type='button'>HAPUS</button>
 			<input class="data-id" type="hidden" autocomplete="off" />
         </td>
     </tr>

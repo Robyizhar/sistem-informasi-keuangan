@@ -44,7 +44,6 @@ class PemasukanBosController extends Controller
     }
 
     public function getDetail(Request $request) {
-        // return $request;
         $detail = PemasukanBosDetail::where('m_pemasukan_bos_id', $request->id)->get();
         return $detail;
     }
@@ -57,13 +56,15 @@ class PemasukanBosController extends Controller
         try {
             $data = $request->except(['_token', '_method', 'id', 'sub']);
             $recent_data = PemasukanBos::where('year', $request->year)->first();
+
             if(!empty($recent_data)) {
                 Alert::toast(' Tahun '.$request->year.' Sudah ada, silahkan untuk membuat lagi tahun depan', 'warning');
                 return back();
             }
-            $data['name'] = 'Pemasukan Bos Tahun '.$data['year'];
-            DB::beginTransaction();
 
+            $data['name'] = 'Pemasukan Bos Tahun '.$data['year'];
+
+            DB::beginTransaction();
             $master = $this->model->store($data);
 
             if (!empty($request->sub)) {
@@ -77,19 +78,16 @@ class PemasukanBosController extends Controller
                     ]);
                 }
             }
-
             DB::commit();
+
             Alert::toast('Pemasukan Bos Berhasil Disimpan', 'success');
 
             return redirect()->route('pemasukan-bos.index');
         } catch (\Throwable $e) {
+            DB::rollback();
             Alert::toast($e->getMessage(), 'error');
             return back();
         }
-    }
-
-    public function show($id) {
-        //
     }
 
     public function edit($id) {
@@ -104,17 +102,50 @@ class PemasukanBosController extends Controller
 
     public function update(Request $request) {
         try {
-            $data = $request->except(['_token', '_method', 'id']);
-            $pemasukan_bos = $this->model->update($request->id, $data);
+            $data = $request->except(['_token', '_method', 'id', 'sub']);
+
+            DB::beginTransaction();
+            $master = $this->model->update($request->id, $data);
+            if (!empty($request->sub)) {
+                foreach ($request->sub as $sub) {
+                    PemasukanBosDetail::updateOrCreate(
+                        [
+                            "m_pemasukan_bos_id"        => $master->id,
+                            "name"                      => $sub['name'],
+                        ],
+                        [
+                            "received_funds"            => str_replace(",", "", $sub['received_funds']),
+                            "start_date"                => date("Y-M-d", strtotime($sub['start_date'])),
+                            "end_date"                  => date("Y-M-d", strtotime($sub['end_date']))
+                        ]
+                    );
+                }
+            }
+            DB::commit();
+
             Alert::toast('Pemasukan Bos Berhasil Diupdate', 'success');
             return redirect()->route('pemasukan-bos.index');
         } catch (\Throwable $e) {
+            DB::rollback();
             Alert::toast($e->getMessage(), 'error');
             return redirect()->route('pemasukan-bos.index');
         }
     }
 
     public function destroy($id) {
-        //
+        $data = PemasukanBos::findOrFail($id);
+        if (!$data)
+            return redirect()->route('pemasukan-bos.index');
+
+        DB::beginTransaction();
+        try {
+            $data->delete();
+            DB::commit();
+            return response()->json('Berhasil Menghapus Data', 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json('Gagal Menghapus Data', 500);
+        }
+
     }
 }

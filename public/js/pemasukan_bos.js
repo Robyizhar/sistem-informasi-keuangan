@@ -38,16 +38,29 @@ $(document).ready(function () {
 });
 
 $('.triggerSub').on('click', function () {
-    getSub();
-});
 
-function getSub() {
-    let tr_clone = $(".template-sub-list").clone();
-    tr_clone.removeClass('template-sub-list');
-    tr_clone.addClass('sub-list');
-    $("#table-data-sub").append(tr_clone);
-    resetDataSub();
-}
+    if ($(".sub-list").length >= 3) {
+
+        Swal.fire({
+            text: `Jangan lebih dari 3 dong !`,
+            target: '.wrapper',
+            customClass: {
+                container: 'position-fixed'
+            },
+            toast: true,
+            position: 'top-right'
+        });
+
+    } else {
+
+        let tr_clone = $(".template-sub-list").clone();
+        tr_clone.removeClass('template-sub-list');
+        tr_clone.addClass('sub-list');
+        $("#table-data-sub").append(tr_clone);
+        resetDataSub();
+
+    }
+});
 
 function getDataDetail () {
     $.ajax({
@@ -64,16 +77,18 @@ function getDataDetail () {
                 tr_clone.removeClass('template-sub-list');
                 tr_clone.addClass('sub-list');
                 tr_clone.find(".sub_name").val(row.name);
+                tr_clone.find(".sub_id").val(row.id)
 
                 let received_funds = Number(row.received_funds).toLocaleString('en', {
-                    maximumFractionDigits: 4,
-                    minimumFractionDigits: 4,
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
                     currency: 'INR'
                 });
 
                 tr_clone.find(".sub_received_funds").val(received_funds)
                 tr_clone.find(".sub_start_date").val(row.start_date)
                 tr_clone.find(".sub_end_date").val(row.end_date)
+                tr_clone.find(".removesub").attr('disabled', 'disabled')
 
                 $("#table-data-sub").append(tr_clone);
                 resetDataSub();

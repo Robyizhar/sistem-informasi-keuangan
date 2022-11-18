@@ -39,6 +39,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    const BASE_URL = `{{ url('/') }}`;
 </script>
 @stack('script')
 <script>

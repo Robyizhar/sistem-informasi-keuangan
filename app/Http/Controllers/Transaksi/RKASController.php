@@ -61,7 +61,7 @@ class RKASController extends Controller {
     public function store(Request $request) {
         try {
             $data = $request->except(['_token', '_method', 'id']);
-            // return $data['rkas'];
+            return $data;
             DB::beginTransaction();
             foreach ($data['rkas'] as $value) {
                 $rkas = RKAS::create([

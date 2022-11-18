@@ -6,6 +6,10 @@ use Illuminate\Database\Seeder;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\PembayaranSpp;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Support\Facades\Hash;
 use DB;
 
 class SiswaSeeder extends Seeder
@@ -664,6 +668,13 @@ class SiswaSeeder extends Seeder
                     'nisn' => $nisns[$index]
                 ]
             );
+            $user = \App\Models\User::factory()->create([
+                'name' => $siswa['name'],
+                'email' => $nisns[$index].'@sik.net',
+                'password' => Hash::make('asdw1234')
+            ]);
+            $user->syncRoles(2);
+
             foreach ($kelas as $key) {
 
                 for ($i=0; $i < sizeOf($years['ganjil']); $i++) {

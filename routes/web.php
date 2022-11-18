@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit')
             ->middleware(['role_or_permission:Developer|Edit-User']);
 
-        Route::post('/store', [UserController::class, 'Add'])->name('user.store')
+        Route::post('/store', [UserController::class, 'store'])->name('user.store')
             ->middleware(['role_or_permission:Developer|Edit-User']);
 
         Route::put('/update', [UserController::class, 'update'])->name('user.update')
@@ -215,20 +215,22 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/destroy/{id}', [PengeluaranSppDsp::class, 'destroy'])->name('pengeluaran-spp-dsp.destroy');
     });
 
-    Route::prefix('pemasukan_bos')->group(function () {
-        Route::get('/', [PemasukanBosController::class, 'index'])->name('pemasukan_bos.index');
+    Route::prefix('pemasukan-bos')->group(function () {
+        Route::get('/', [PemasukanBosController::class, 'index'])->name('pemasukan-bos.index');
 
         Route::post('/get-data', [PemasukanBosController::class, 'getData']);
 
-        Route::get('/create', [PemasukanBosController::class, 'create'])->name('pemasukan_bos.create');
+        Route::post('/get-detail', [PemasukanBosController::class, 'getDetail']);
 
-        Route::get('/edit/{id}', [PemasukanBosController::class, 'edit'])->name('pemasukan_bos.edit');
+        Route::get('/create', [PemasukanBosController::class, 'create'])->name('pemasukan-bos.create');
 
-        Route::post('/store', [PemasukanBosController::class, 'store'])->name('pemasukan_bos.store');
+        Route::get('/edit/{id}', [PemasukanBosController::class, 'edit'])->name('pemasukan-bos.edit');
 
-        Route::put('/update', [PemasukanBosController::class, 'update'])->name('pemasukan_bos.update');
+        Route::post('/store', [PemasukanBosController::class, 'store'])->name('pemasukan-bos.store');
 
-        Route::get('/destroy/{id}', [PemasukanBosController::class, 'destroy'])->name('pemasukan_bos.destroy');
+        Route::put('/update', [PemasukanBosController::class, 'update'])->name('pemasukan-bos.update');
+
+        Route::get('/destroy/{id}', [PemasukanBosController::class, 'destroy'])->name('pemasukan-bos.destroy');
     });
 
     Route::prefix('rkas')->group(function () {

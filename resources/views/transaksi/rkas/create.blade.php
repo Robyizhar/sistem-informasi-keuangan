@@ -38,12 +38,13 @@
             <div class="col-md-10">
                 <div class="form-group">
                     <label>Pemasukan Bos</label>
-                    <select class="form-control pemasukan_bos" name="rkas[0][pemasukan_bos]">
+                    <select class="form-control pemasukan_bos">
                         <option value="">Pilih Pemasukan Bos</option>
                         @foreach ($data['pemasukan_bos'] as $pemasukan_bos)
                             <option data-funds="{{ $pemasukan_bos->received_funds }}" value="{{ $pemasukan_bos->id }}">Tahun {{ $pemasukan_bos->year}} Tahap {{ $pemasukan_bos->step}}</option>
                         @endforeach
                     </select>
+                    <input type="hidden" name="rkas[0][pemasukan_bos]">
                 </div>
             </div>
             <div class="col-md-2">
@@ -62,6 +63,11 @@
 
         const PEMASUKAN_BOS = `{!! $data['pemasukan_bos'] !!}`;
         const GOLONGAN_RKAS = `{!! $data['golongan_rkas'] !!}`;
+        // console.log(JSON.parse(GOLONGAN_RKAS));
+
+        // JSON.parse(GOLONGAN_RKAS).map(function (index) {
+        //     console.log(index);
+        // })
 
         $(".create-rkas").click(function (e) {
 
@@ -78,7 +84,7 @@
                     text: `Jangan lebih dari ${jQuery.parseJSON(PEMASUKAN_BOS).length} dong !`,
                     target: '.wrapper',
                     customClass: {
-                        container: 'position-absolute'
+                        container: 'position-fixed'
                     },
                     toast: true,
                     position: 'top-right'
@@ -92,18 +98,35 @@
             let parent = $(this).closest(".rkas-selected-list");
             let index = parent.attr("childidx");
             let id = $(this).attr("data-bos");
+
+            const gol = JSON.parse(GOLONGAN_RKAS);
+
+            let current_count = $('.golongan_rkas').length;
+
             if (id == '' || id == undefined) {
                 Swal.fire({
                     text: `Pilih dana nya dulu !`,
                     target: '.wrapper',
                     customClass: {
-                        container: 'position-absolute'
+                        container: 'position-fixed'
                     },
                     toast: true,
                     position: 'top-right'
                 });
             } else {
-                addGolongan(parent, index)
+                if (current_count >= gol.length) {
+                    Swal.fire({
+                        text: `Jumlah max gol ${gol.length} !`,
+                        target: '.wrapper',
+                        customClass: {
+                            container: 'position-fixed'
+                        },
+                        toast: true,
+                        position: 'top-right'
+                    });
+                } else {
+                    addGolongan(parent, index);
+                }
             }
 
         });
@@ -113,18 +136,39 @@
             let parent = $(this).closest(".golongan-rkas-row");
             let index = parent.attr("childidx");
             let id = $(this).attr("data-gol");
+
+            const sub_golongan = JSON.parse(GOLONGAN_RKAS).find(function (index) {
+                return parseInt(index.id) === parseInt(id);
+            });
+
+            let current_count = $('.sub_golongan_rkas').length;
+
+            // console.log(`current : ${current_count}, gol : ${sub_golongan.sub_golongan.length}`);
+
             if (id == '' || id == undefined) {
                 Swal.fire({
                     text: `Pilih golongannya dulu !`,
                     target: '.wrapper',
                     customClass: {
-                        container: 'position-absolute'
+                        container: 'position-fixed'
                     },
                     toast: true,
                     position: 'top-right'
                 });
             } else {
-                addSubGolongan(parent, index, id)
+                if (current_count >= sub_golongan.sub_golongan.length) {
+                    Swal.fire({
+                        text: `Jumlah max sub untuk gol ini ${sub_golongan.sub_golongan.length} !`,
+                        target: '.wrapper',
+                        customClass: {
+                            container: 'position-fixed'
+                        },
+                        toast: true,
+                        position: 'top-right'
+                    });
+                } else {
+                    addSubGolongan(parent, index, id)
+                }
             }
 
         });
@@ -147,14 +191,16 @@
                     text: `Tadi kan udah milih yang ini, gimana sih !`,
                     target: '.wrapper',
                     customClass: {
-                        container: 'position-absolute'
+                        container: 'position-fixed'
                     },
                     toast: true,
                     position: 'top-right'
                 });
                 $('option:selected', this).remove();
             } else {
-                $(this).attr('readonly',true)
+                $(this).attr('disabled',true)
+                // $(`.pemasukan_bos-${childidx}`).val(id)
+                $(this).next().val(id);
                 parent.find('.create-gol').attr("data-bos", id);
 
             }
@@ -176,6 +222,7 @@
             $(".rkas-selected-list").each(function () {
                 var another = this;
                 search_index = $(this).attr("childidx");
+                console.log(search_index);
                 $(this).find('input,select').each(function () {
                     this.name = this.name.replace('[' + search_index + ']', '[' + index + ']');
                     $(another).attr("childidx", index);

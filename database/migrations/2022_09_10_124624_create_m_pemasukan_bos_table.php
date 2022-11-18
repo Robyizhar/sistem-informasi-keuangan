@@ -15,10 +15,9 @@ class CreateMPemasukanBosTable extends Migration
     {
         Schema::create('m_pemasukan_bos', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->year('year');
             $table->string('type')->nullable(true);
-            $table->enum('step', ['1', '2', '3']);
-            $table->decimal('received_funds', 20, 2);
             $table->timestamps();
             $table->softDeletes();
             $table->smallInteger('created_by')->nullable(true);

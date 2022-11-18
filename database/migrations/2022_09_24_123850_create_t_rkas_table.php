@@ -15,7 +15,9 @@ class CreateTRkasTable extends Migration
     {
         Schema::create('t_rkas', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('pemasukan_bos_detail_id');
+            $table->string('golongan_rkas_name');
+            $table->integer('golongan_rkas_id');
             $table->timestamps();
             $table->softDeletes();
             $table->smallInteger('created_by')->nullable(true);

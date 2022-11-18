@@ -65,6 +65,7 @@ class UserController extends Controller {
 
     public function store(Request $request) {
         try {
+            return $request;
             $data = $request->except(['_token', '_method', 'id', 'password_confirm', 'role']);
             $data['password'] = Hash::make($request->password);
             $data['role_id'] = $request->role;

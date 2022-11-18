@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Blameable;
 
-class PemasukanBos extends Model
+class PemasukanBosDetail extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use Blameable;
 
-    protected $table = 'm_pemasukan_bos';
-    protected $fillable = ['year', 'type', 'name', 'created_by', 'updated_by', 'deleted_by'];
-
+    protected $table = 'm_pemasukan_bos_detail';
+    protected $fillable = ['name', 'received_funds', 'start_date', 'end_date', 'created_by', 'updated_by', 'deleted_by', 'm_pemasukan_bos_id'];
 }

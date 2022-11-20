@@ -9,6 +9,11 @@ $(document).find('.withseparator').on({
 
 $(document).ready(function () {
 
+    $('.refresh-rkas').click(function (e) {
+        e.preventDefault();
+        location.reload();
+    });
+
     $('.unit').on('keyup change', function (e) {
         e.preventDefault();
         let this_row = $(this).closest('tr');
@@ -96,7 +101,8 @@ $(document).ready(function () {
             let alocation = parseInt(amount_total) - parseInt(summary_row);
 
             let data = {
-                amount_total: this_value.replace(/[^0-9.]/g, '') || 0,
+                row_amount_total: this_row.find('.amount_total').val().replace(/[^0-9.]/g, '') || 0,
+                amount_total: this_value || 0,
                 pemasukan_bos_detail_id: this_td.find('.pemasukan_detail_id').val(),
                 golongan_rkas_name: this_td.find('.golongan_rkas_name').val(),
                 golongan_rkas_id: this_td.find('.golongan_rkas_id').val(),
@@ -175,7 +181,8 @@ $(document).ready(function () {
             let alocation = parseInt(amount_total) - parseInt(summary_row);
 
             let data = {
-                amount_total: this_value.replace(/[^0-9.]/g, '') || 0,
+                row_amount_total: this_row.find('.amount_total').val().replace(/[^0-9.]/g, '') || 0,
+                amount_total: this_value || 0,
                 pemasukan_bos_detail_id: this_td.find('.pemasukan_detail_id').val(),
                 golongan_rkas_name: this_td.find('.golongan_rkas_name').val(),
                 golongan_rkas_id: this_td.find('.golongan_rkas_id').val(),
@@ -253,7 +260,8 @@ $(document).ready(function () {
             $(this).next().css('display', 'none');
             let alocation = parseInt(amount_total) - parseInt(summary_row);
             let data = {
-                amount_total: this_value.replace(/[^0-9.]/g, '') || 0,
+                row_amount_total: this_row.find('.amount_total').val().replace(/[^0-9.]/g, '') || 0,
+                amount_total: this_value || 0,
                 pemasukan_bos_detail_id: this_td.find('.pemasukan_detail_id').val(),
                 golongan_rkas_name: this_td.find('.golongan_rkas_name').val(),
                 golongan_rkas_id: this_td.find('.golongan_rkas_id').val(),

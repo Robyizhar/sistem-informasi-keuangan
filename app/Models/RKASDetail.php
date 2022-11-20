@@ -14,16 +14,13 @@ class RKASDetail extends Model
     use SoftDeletes;
     use Blameable;
 
-    protected $table = 't_rkas';
+    protected $table = 't_rkas_detail';
     protected $fillable = [
         'rkas_id',
-        'golongan_rkas_id',
+        'pemasukan_bos_detail_id',
+        'sub_golongan_rkas_name',
         'sub_golongan_rkas_id',
-        'pemasukan_bos_id',
         'description',
-        'volume',
-        'unit',
-        'unit_price',
         'amount_total',
         'created_by',
         'updated_by',

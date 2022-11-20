@@ -33,7 +33,7 @@ class RKAS extends Model
     ];
 
     public function rkas_detail() {
-        return $this->hasMany(RKASDetail::class, 'golongan_rkas_id');
+        return $this->hasMany(RKASDetail::class, 'rkas_id');
     }
 
 }

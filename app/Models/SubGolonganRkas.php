@@ -17,6 +17,6 @@ class SubGolonganRkas extends Model
     protected $fillable = ['golongan_rkas_id', 'name', 'created_by', 'updated_by', 'deleted_by', 'volume'];
 
     public function rkas() {
-        return $this->hasMany(RKAS::class, 'sub_golongan_rkas_id');
+        return $this->hasOne(RKAS::class, 'sub_golongan_rkas_id');
     }
 }

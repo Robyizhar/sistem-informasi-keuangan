@@ -15,7 +15,7 @@ class GolonganRkas extends Model
     use Blameable;
 
     protected $table = 'm_golongan_rkas';
-    protected $fillable = ['code', 'name', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['code', 'name', 'created_by', 'updated_by', 'deleted_by', 'pemasukan_bos_id'];
 
     protected static function boot() {
 		parent::boot();

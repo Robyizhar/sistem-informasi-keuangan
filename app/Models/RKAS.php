@@ -19,7 +19,17 @@ class RKAS extends Model
         'name',
         'created_by',
         'updated_by',
-        'deleted_by'
+        'deleted_by',
+        'pemasukan_bos_detail_id',
+        'golongan_rkas_name',
+        'golongan_rkas_id',
+        'sub_golongan_rkas_name',
+        'sub_golongan_rkas_id',
+        'description',
+        'volume',
+        'unit',
+        'unit_price',
+        'amount_total'
     ];
 
     public function rkas_detail() {

@@ -4,7 +4,7 @@
 @endpush
 @section('content')
     @component('layouts.component.datatable')
-        @slot('action', route('rkas.create'))
+        {{-- @slot('action', route('rkas.create')) --}}
         @slot('content')
             <th width="5%">No</th>
             <th>Nama</th>

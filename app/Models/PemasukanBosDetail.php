@@ -15,4 +15,5 @@ class PemasukanBosDetail extends Model
 
     protected $table = 'm_pemasukan_bos_detail';
     protected $fillable = ['name', 'received_funds', 'start_date', 'end_date', 'created_by', 'updated_by', 'deleted_by', 'm_pemasukan_bos_id'];
+
 }

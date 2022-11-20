@@ -36,4 +36,8 @@ class PemasukanBos extends Model
         return $this->hasMany(PemasukanBosDetail::class, 'm_pemasukan_bos_id');
     }
 
+    public function golongan_rkas() {
+        return $this->hasMany(GolonganRkas::class, 'pemasukan_bos_id');
+    }
+
 }

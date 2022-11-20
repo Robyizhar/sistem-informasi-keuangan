@@ -27,14 +27,13 @@ class RKASController extends Controller {
     }
 
     public function getData() {
-        $data = RKAS::query()->orderBy('id', 'ASC');
+        $data = PemasukanBos::query()->orderBy('id', 'DESC');
         return DataTables::of($data)
         ->addColumn('Aksi', function ($data) {
 
             return view('layouts.component.action', [
                 'model' => $data,
-                'url_edit' => route('rkas.edit', $data->id),
-                'url_destroy' => route('rkas.destroy', $data->id),
+                'url_detail' => route('rkas.detail', $data->id),
                 'menu' => 'RKAS'
             ]);
 
@@ -46,12 +45,12 @@ class RKASController extends Controller {
 
     public function create() {
         try {
-            $data = [
-                'pemasukan_bos' => PemasukanBos::where('year', now()->year)->orderBy('step', 'asc')->get(),
-                'golongan_rkas' => GolonganRkas::with('sub_golongan')->orderBy('code', 'asc')->get(),
-            ];
+            // $data = [
+            //     'pemasukan_bos' => PemasukanBos::where('year', now()->year)->orderBy('step', 'asc')->get(),
+            //     'golongan_rkas' => GolonganRkas::with('sub_golongan')->orderBy('code', 'asc')->get(),
+            // ];
             // return $data;
-            return view('transaksi.rkas.create', compact('data'));
+            return view('transaksi.rkas.create');
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
             return redirect()->route('rkas.index');
@@ -61,42 +60,43 @@ class RKASController extends Controller {
     public function store(Request $request) {
         try {
             $data = $request->except(['_token', '_method', 'id']);
-            return $data;
             DB::beginTransaction();
-            foreach ($data['rkas'] as $value) {
-                $rkas = RKAS::create([
-                    'name' => 'RKAS TAHUN INI'
-                ]);
-                foreach ($value->golongan_rkas as $golongan_rkas => $value) {
-                    RKASDetail::create([
-                        'rkas_id' => $rkas->id,
-                        'pemasukan_bos_id' => $value->pemasukan_bos,
-                        'golongan_rkas_id' => $golongan_rkas,
-                        'sub_golongan_rkas_id' => $golongan_rkas
-                    ]);
-                }
-            }
-            // $golongan_rkas = $this->model->store($data);
-            // if ($golongan_rkas && !empty($request->sub_golongan)) {
-            //     for ($i=0; $i < sizeOf($request->sub_golongan); $i++) {
-            //         SubGolonganRkas::create([
-            //             'golongan_rkas_id' => $golongan_rkas->id,
-            //             'name' => $request->sub_golongan[$i]
-            //         ]);
-            //     }
-            // }
+            $rkas = RKAS::updateOrCreate(
+                [
+                    'sub_golongan_rkas_id' => $request->sub_golongan_rkas_id,
+                    'pemasukan_bos_detail_id' => $request->pemasukan_bos_detail_id,
+                    'golongan_rkas_id' => $request->golongan_rkas_id,
+                ],
+                [
+                    'amount_total' => $request->amount_total,
+                    'golongan_rkas_name' => $request->golongan_rkas_name,
+                    'sub_golongan_rkas_name' => $request->sub_golongan_rkas_name,
+                    'description' => $request->description,
+                    'volume' => $request->volume,
+                    'unit' => $request->unit,
+                    'unit_price' => $request->unit_price,
+                ]
+            );
             DB::commit();
-            // Alert::toast($request->name.' Berhasil Disimpan', 'success');
-            // return redirect()->route('rkas.index');
+            return response()->json($rkas, 200);
         } catch (\Throwable $e) {
             DB::rollback();
-            Alert::toast($e->getMessage(), 'error');
-            return back();
+            return response()->json($e->getMessage(), 500);
         }
     }
 
     public function show($id) {
-        //
+        try {
+            $data = PemasukanBos::with('pemasukan_detail', 'golongan_rkas.sub_golongan.rkas')->find($id);
+            // return $data->pemasukan_detail;
+            // $array = array_column($data->pemasukan_detail->toArray(), 'name');
+            // $key = array_search('Pemasukan Tahun 2022 Tahap 3', $array);
+            // return $key;
+            return view('transaksi.rkas.create', compact('data'));
+        } catch (\Throwable $e) {
+            Alert::toast($e->getMessage(), 'error');
+            return redirect()->route('rkas.index');
+        }
     }
 
     public function edit($id) {

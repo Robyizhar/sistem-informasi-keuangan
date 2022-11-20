@@ -89,13 +89,15 @@ class GolRkasSeeder extends Seeder
         foreach ($golongans as $golongan) {
             $gol = GolonganRkas::create([
                 'code' => 'GOL-'.$index,
-                'name' => $golongan['name']
+                'name' => $golongan['name'],
+                'pemasukan_bos_id' => 1
             ]);
             if (isset($golongan['sub_golongan']) && !empty($golongan['sub_golongan'])) {
                 for ($i=0; $i < sizeOf($golongan['sub_golongan']); $i++) {
                     SubGolonganRkas::create([
                         'golongan_rkas_id' => $gol->id,
-                        'name' => $golongan['sub_golongan'][$i]
+                        'name' => $golongan['sub_golongan'][$i],
+                        'volume' => 'pcs'
                     ]);
                 }
             }

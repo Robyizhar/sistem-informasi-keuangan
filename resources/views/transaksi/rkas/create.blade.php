@@ -2,285 +2,124 @@
 @push('style')
 <style>
 
+    .rkas-format-text-8 {
+        font-size: 0.8rem;
+        margin: 0;
+    }
+
+    .error-message {
+        font-size: 0.7rem;
+        margin: 0;
+        display: none;
+        color: rgb(252, 48, 48);
+    }
 
 </style>
 @endpush
 @section('content')
-@component('layouts.component.form')
-    @slot('isfile', false)
-    @slot('action', !isset($data['detail']) ? route('rkas.store') : route('rkas.update'))
-    @isset ($data['detail'])
-        @slot('method','PUT')
-    @else
-        @slot('method','POST')
-    @endisset
-    @slot('content')
-    <div id="form-rkas">
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="form-rkas">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Uraian</th>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Vol</th>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Unit</th>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Harga</th>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Jumlah</th>
+                                        <th scope="col" colspan="3" class="text-center rkas-format-text-8 align-middle">Sumber Dana</th>
+                                        <th scope="col" rowspan="2" class="text-center rkas-format-text-8 align-middle">Sisa Alokasi</th>
+                                    </tr>
+                                    <tr>
+                                        @foreach ($data->pemasukan_detail as $pemasukan_detail)
+                                            <td class="text-center rkas-format-text-8">
+                                                <p class="rkas-format-text-8">{{ $pemasukan_detail->name }}</p>
+                                                <span style="font-size: 0.8rem;">( {{ number_format($pemasukan_detail->received_funds, 2) }} )</span>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->golongan_rkas as $golongan)
+                                        <tr>
+                                            <th class="text-center align-middle rkas-format-text-8" style="background-color: #d6d6d6;" colspan="{{ count($data->pemasukan_detail) + 6 }}" >{{ $golongan->name }}</th>
+                                        </tr>
+                                        @foreach ($golongan->sub_golongan as $sub_golongan)
+                                        <tr>
+                                            @php
 
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12 form-group mb-3">
-            <button type="button" class="btn btn-secondary create-rkas btn-submit waves-effect waves-light float-right">Tambah RKAS</button>
-        </div>
-    </div>
-    @endslot
-@endcomponent
-<div style="display: none;">
-    <div class="template-rkas-selected-list" childidx="0">
-        <div class="row">
-            <div class="col-md-12">
-                <hr style="border-top: 3px solid lightgrey;">
-                <p>Input RKAS </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
-                <div class="form-group">
-                    <label>Pemasukan Bos</label>
-                    <select class="form-control pemasukan_bos">
-                        <option value="">Pilih Pemasukan Bos</option>
-                        @foreach ($data['pemasukan_bos'] as $pemasukan_bos)
-                            <option data-funds="{{ $pemasukan_bos->received_funds }}" value="{{ $pemasukan_bos->id }}">Tahun {{ $pemasukan_bos->year}} Tahap {{ $pemasukan_bos->step}}</option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="rkas[0][pemasukan_bos]">
+                                                $sum_amount_total = 0;
+                                                $amount_total = 0;
+                                                $unit = 1;
+                                                $unit_price = 0;
+
+                                                if (count($sub_golongan->rkas) > 0){
+                                                    $sum_amount_total = array_sum(array_column($sub_golongan->rkas->toArray(), 'amount_total'));
+                                                    $unit = $sub_golongan->rkas[0]->unit;
+                                                    $unit_price = $sub_golongan->rkas[0]->unit_price;
+
+                                                    foreach ($sub_golongan->rkas as $rkas) {
+                                                        $amount_total += $rkas->unit * $rkas->unit_price;
+                                                    }
+
+                                                }
+
+                                            @endphp
+                                            <td class="rkas-format-text-8 align-middle">{{ $loop->iteration }} - {{ $sub_golongan->name }}</td>
+                                            <td class="rkas-format-text-8 align-middle"> {{ $sub_golongan->volume }} </td>
+                                            <td class="rkas-format-text-8 align-middle"> <input class="unit" value="{{ $unit }}" type="number" min="1" id=""> </td>
+                                            <td class="rkas-format-text-8 align-middle"> <input class="withseparator unit_price" value="{{ number_format($unit_price, 2) }}" type="text" id=""> </td>
+                                            <td class="rkas-format-text-8 align-middle"> <input class="amount_total" value="{{ number_format($amount_total, 2) }}" readonly style="background-color: #d7d7d7;" type="text" id=""> </td>
+                                            @foreach ($data->pemasukan_detail as $pemasukan_detail)
+                                            <td class="rkas-format-text-8 text-center align-middle">
+                                                @if (count($sub_golongan->rkas) > 0)
+                                                    @php
+                                                        $rkas_detail = null;
+                                                        $pemasukan_bos_detail_id_list = array_column($sub_golongan->rkas->toArray(), 'pemasukan_bos_detail_id');
+                                                        $pemasukan_bos_detail_id_index = array_search($pemasukan_detail->id, $pemasukan_bos_detail_id_list);
+                                                        $rkas_detail = $sub_golongan->rkas[$pemasukan_bos_detail_id_index]
+                                                    @endphp
+                                                    <input data-received_funds="{{ $pemasukan_detail->received_funds }}" index="{{ $pemasukan_bos_detail_id_index }}" value="{{ $pemasukan_bos_detail_id_index === 0 || $pemasukan_bos_detail_id_index === 1 || $pemasukan_bos_detail_id_index === 2 ? number_format($rkas_detail->amount_total, 2) : '' }}" class="rkas rkas-{{$loop->iteration}} withseparator" type="text">
+                                                @else
+                                                    <input data-received_funds="{{ $pemasukan_detail->received_funds }}" class="rkas rkas-{{$loop->iteration}} withseparator" type="text">
+                                                @endif
+
+                                                <input type="hidden" class="pemasukan_detail_id" value="{{ $pemasukan_detail->id }}">
+                                                <input type="hidden" class="golongan_rkas_id" value="{{ $golongan->id }}">
+                                                <input type="hidden" class="golongan_rkas_name" value="{{ $golongan->name }}">
+                                                <input type="hidden" class="sub_golongan_rkas_id" value="{{ $sub_golongan->id }}">
+                                                <input type="hidden" class="sub_golongan_rkas_name" value="{{ $sub_golongan->name }}">
+                                                <input type="hidden" class="description" value="description">
+                                                <input type="hidden" class="volume" value="{{ $sub_golongan->volume }}">
+                                                <p class="error-message"></p>
+                                            </td>
+                                            @endforeach
+                                            <td class="rkas-format-text-8 align-middle alocation"> </td>
+                                        </tr>
+                                        @endforeach
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12 form-group mb-3">
+                            <button type="button" class="btn btn-secondary create-rkas btn-submit waves-effect waves-light float-right">Tambah RKAS</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-info create-gol btn-sm float-right" data-bos="" style="margin-top: 30px;">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Tambah Gol
-                </button>
-            </div>
         </div>
-    </div>
-
+    </section>
 </div>
 @endsection
 @push('script')
-
-    <script>
-
-        const PEMASUKAN_BOS = `{!! $data['pemasukan_bos'] !!}`;
-        const GOLONGAN_RKAS = `{!! $data['golongan_rkas'] !!}`;
-        // console.log(JSON.parse(GOLONGAN_RKAS));
-
-        // JSON.parse(GOLONGAN_RKAS).map(function (index) {
-        //     console.log(index);
-        // })
-
-        $(".create-rkas").click(function (e) {
-
-            e.preventDefault();
-
-            if (jQuery.parseJSON(PEMASUKAN_BOS).length > $(".rkas-selected-list").length) {
-                var tr_clone = $(".template-rkas-selected-list").clone();
-                tr_clone.removeClass('template-rkas-selected-list');
-                tr_clone.addClass('rkas-selected-list');
-                $("#form-rkas").append(tr_clone);
-                resetDataRKAS();
-            } else {
-                Swal.fire({
-                    text: `Jangan lebih dari ${jQuery.parseJSON(PEMASUKAN_BOS).length} dong !`,
-                    target: '.wrapper',
-                    customClass: {
-                        container: 'position-fixed'
-                    },
-                    toast: true,
-                    position: 'top-right'
-                })
-            }
-
-        });
-
-        $(document).on('click', '.create-gol', function () {
-
-            let parent = $(this).closest(".rkas-selected-list");
-            let index = parent.attr("childidx");
-            let id = $(this).attr("data-bos");
-
-            const gol = JSON.parse(GOLONGAN_RKAS);
-
-            let current_count = $('.golongan_rkas').length;
-
-            if (id == '' || id == undefined) {
-                Swal.fire({
-                    text: `Pilih dana nya dulu !`,
-                    target: '.wrapper',
-                    customClass: {
-                        container: 'position-fixed'
-                    },
-                    toast: true,
-                    position: 'top-right'
-                });
-            } else {
-                if (current_count >= gol.length) {
-                    Swal.fire({
-                        text: `Jumlah max gol ${gol.length} !`,
-                        target: '.wrapper',
-                        customClass: {
-                            container: 'position-fixed'
-                        },
-                        toast: true,
-                        position: 'top-right'
-                    });
-                } else {
-                    addGolongan(parent, index);
-                }
-            }
-
-        });
-
-        $(document).on('click', '.create-sub', function () {
-
-            let parent = $(this).closest(".golongan-rkas-row");
-            let index = parent.attr("childidx");
-            let id = $(this).attr("data-gol");
-
-            const sub_golongan = JSON.parse(GOLONGAN_RKAS).find(function (index) {
-                return parseInt(index.id) === parseInt(id);
-            });
-
-            let current_count = $('.sub_golongan_rkas').length;
-
-            // console.log(`current : ${current_count}, gol : ${sub_golongan.sub_golongan.length}`);
-
-            if (id == '' || id == undefined) {
-                Swal.fire({
-                    text: `Pilih golongannya dulu !`,
-                    target: '.wrapper',
-                    customClass: {
-                        container: 'position-fixed'
-                    },
-                    toast: true,
-                    position: 'top-right'
-                });
-            } else {
-                if (current_count >= sub_golongan.sub_golongan.length) {
-                    Swal.fire({
-                        text: `Jumlah max sub untuk gol ini ${sub_golongan.sub_golongan.length} !`,
-                        target: '.wrapper',
-                        customClass: {
-                            container: 'position-fixed'
-                        },
-                        toast: true,
-                        position: 'top-right'
-                    });
-                } else {
-                    addSubGolongan(parent, index, id)
-                }
-            }
-
-        });
-
-        $(document).on('change', '.pemasukan_bos', function () {
-
-            let current = [];
-            let parent = $(this).closest(".rkas-selected-list");
-            let id = $(this).val();
-            let childidx = parent.attr("childidx");
-            $(".rkas-selected-list").each(function () {
-                let row = $(this).find('.pemasukan_bos');
-                if (childidx != $(this).attr("childidx")) {
-                    current.push(row.val());
-                }
-            });
-
-            if (current.includes(id)) {
-                Swal.fire({
-                    text: `Tadi kan udah milih yang ini, gimana sih !`,
-                    target: '.wrapper',
-                    customClass: {
-                        container: 'position-fixed'
-                    },
-                    toast: true,
-                    position: 'top-right'
-                });
-                $('option:selected', this).remove();
-            } else {
-                $(this).attr('disabled',true)
-                // $(`.pemasukan_bos-${childidx}`).val(id)
-                $(this).next().val(id);
-                parent.find('.create-gol').attr("data-bos", id);
-
-            }
-
-        });
-
-        $(document).on('change', '.golongan_rkas', function (e) {
-            e.stopImmediatePropagation();
-            let parent = $(this).closest(".rkas-selected-list");
-            let id = $(this).val();
-
-            parent.find('.create-sub').attr("data-gol", id);
-            $(this).attr('readonly',true)
-
-        });
-
-        function resetDataRKAS() {
-            let index = 0;
-            $(".rkas-selected-list").each(function () {
-                var another = this;
-                search_index = $(this).attr("childidx");
-                console.log(search_index);
-                $(this).find('input,select').each(function () {
-                    this.name = this.name.replace('[' + search_index + ']', '[' + index + ']');
-                    $(another).attr("childidx", index);
-                });
-                index++;
-            });
-        }
-
-        function addGolongan(parent, index) {
-            let option = '';
-            $.map(JSON.parse(GOLONGAN_RKAS), function (value, key) {
-                option += `<option value="${value.id}">${value.name}</option>`;
-            });
-            parent.append(
-                `<div class="row golongan-rkas-row" childidx="${index}">
-                    <div class="col-md-10 pl-5">
-                        <div class="form-group">
-                            <label>Golongan RKAS</label>
-                            <select class="form-control golongan_rkas">
-                                <option value="">Pilih Golongan</option>
-                                ${option}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-light create-sub btn-sm float-right" data-gol="" style="margin-top: 30px;">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Tambah Sub
-                        </button>
-                    </div>
-                </div>`
-            );
-        }
-
-        function addSubGolongan(parent, index, id) {
-
-            let option = '';
-            $.map(JSON.parse(GOLONGAN_RKAS), function (value, key) {
-                if (value.id == id) {
-                    value.sub_golongan.forEach(element => {
-                        option += `<option class="sub_golongan_rkas_option" value="${element.id}">${element.name}</option>`;
-                    });
-                }
-            });
-
-            parent.append(
-                `<div class="col-md-10" style="padding-left: 90px;">
-                    <div class="form-group sub_golongan_rkas_id">
-                        <label>Sub Golongan RKAS</label>
-                        <select name="rkas[${index}][golongan_rkas][${id}][]" class="form-control sub_golongan_rkas">
-                            <option value="">Pilih Golongan</option>
-                            ${option}
-                        </select>
-                    </div>
-                </div>`
-            );
-        }
-
-    </script>
+<script src="{{ asset('js/global.js') }}"></script>
+<script src="{{ asset('js/rkas.js') }}"></script>
 @endpush
-
-

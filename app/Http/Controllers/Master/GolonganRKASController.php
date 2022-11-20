@@ -61,7 +61,8 @@ class GolonganRKASController extends Controller {
                 for ($i=0; $i < sizeOf($request->sub_golongan); $i++) {
                     SubGolonganRkas::create([
                         'golongan_rkas_id' => $golongan_rkas->id,
-                        'name' => $request->sub_golongan[$i]
+                        'name' => $request->sub_golongan[$i],
+                        'volume' => $request->volume[$i]
                     ]);
                 }
             }
@@ -81,7 +82,7 @@ class GolonganRKASController extends Controller {
 
     public function edit($id) {
         try {
-            $data['detail'] = $this->model->find($id);
+            $data['detail'] = GolonganRkas::with('sub_golongan')->find($id);
             return view('master.golongan-rkas.create', compact('data'));
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');

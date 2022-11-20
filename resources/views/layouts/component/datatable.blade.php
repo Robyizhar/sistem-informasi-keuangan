@@ -10,7 +10,9 @@
                             <h3 class="card-title">List</h3>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
-                                    <a href="{{ $action }}" class="btn btn-success btn-add waves-effect waves-light float-right mb-2">Add</a>
+                                    @isset($action )
+                                        <a href="{{ $action }}" class="btn btn-success btn-add waves-effect waves-light float-right mb-2">Add</a>
+                                    @endisset
                                 </div>
                             </div>
                         </div>

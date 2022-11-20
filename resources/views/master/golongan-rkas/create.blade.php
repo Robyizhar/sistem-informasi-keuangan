@@ -28,6 +28,15 @@
             <button type="button" class="btn btn-secondary create-sub-golongan btn-submit waves-effect waves-light">Tambah Sub Golongan</button>
         </div>
         <div class="col-md-6 form-group mb-3 sub_golongan">
+            @isset($data['detail']->sub_golongan)
+
+                @foreach ($data['detail']->sub_golongan as $sub_golongan)
+                    <input value="{{ $sub_golongan->name }}" type="text" name="sub_golongan[]" class="form-control mb-2" placeholder="sub_golongan" />
+                    <input value="{{ $sub_golongan->volume }}" type="text" name="volume[]" class="form-control mb-2" placeholder="volume" />
+                    <hr>
+                @endforeach
+
+            @endisset
         </div>
     </div>
     @endslot
@@ -37,7 +46,11 @@
     <script>
         $('.create-sub-golongan').click(function (e) {
             e.preventDefault();
-            $(".sub_golongan").append(`<input value="" type="text" name="sub_golongan[]" class="form-control mb-2" placeholder="sub_golongan" />`);
+            $(".sub_golongan").append(`
+                <input value="" type="text" name="sub_golongan[]" class="form-control mb-2" placeholder="sub_golongan" />
+                <input value="" type="text" name="volume[]" class="form-control mb-2" placeholder="volume" />
+                <hr>
+            `);
         });
     </script>
 @endpush

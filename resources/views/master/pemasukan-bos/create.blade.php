@@ -75,6 +75,7 @@
 </table>
 
 <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/global.js') }}"></script>
 <script src="{{ asset('js/pemasukan_bos.js') }}"></script>
 @isset($detail)
     <script>

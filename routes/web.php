@@ -240,7 +240,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/create', [RKASController::class, 'create'])->name('rkas.create');
 
-        // Route::get('/detail/{id}', [RKASController::class, 'show'])->name('rkas.detail');
+        Route::get('/detail/{id}', [RKASController::class, 'show'])->name('rkas.detail');
 
         Route::post('/store', [RKASController::class, 'store'])->name('rkas.store');
 

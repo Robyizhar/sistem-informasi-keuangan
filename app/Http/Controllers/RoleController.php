@@ -11,7 +11,6 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Menu;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class RoleController extends Controller {
@@ -62,8 +61,7 @@ class RoleController extends Controller {
 
     public function create() {
         try{
-            $data['menus'] = Menu::all();
-            $data['permissions'] = Permission::select('name','id', 'menu_id')->orderBy('name','asc')->get();
+            $data['permissions'] = Permission::select('name','id')->orderBy('name','asc')->get();
             return view('management-user.role.create', compact('data'));
         }catch (\Exception $e) {
             Alert::toast($e->getMessage(), 'error');
@@ -90,8 +88,7 @@ class RoleController extends Controller {
                 return redirect()->route('role.index')->with('error', 'Role tidak ditemukan!');
 
             $data['role_permission'] = $data['detail']->permissions()->pluck('id')->toArray();
-            $data['menus'] = Menu::all();
-            $data['permissions'] = Permission::select('name','id', 'menu_id')->orderBy('name','asc')->get();
+            $data['permissions'] = Permission::select('name','id')->orderBy('name','asc')->get();
             return view('management-user.role.create', compact('data'));
         }catch (\Exception $e) {
             Alert::toast($e->getMessage(), 'error');
@@ -126,14 +123,11 @@ class RoleController extends Controller {
             if (count($users) <= 0) {
                 $delete = $role->delete();
                 $perm   = $role->permissions()->delete();
-                // Alert::toast('Role berhasil dihapus!', 'success');
                 return response()->json($delete, 200);
             } else {
-                // Alert::toast('Role sudah dipakai oleh user', 'error');
                 return 'false';
             }
         }else{
-            // Alert::toast('Role Tidak Ditemukan', 'error');
             return 'false';
         }
     }

@@ -1,9 +1,0 @@
----
- 
-deployment:
- 
- tasks:
- 
- - export DEPLOYPATH=/home/websites/sistem-informasi-gap.xyz
- 
- - /usr/bin/rsync -Paz * $DEPLOYPATH --delete

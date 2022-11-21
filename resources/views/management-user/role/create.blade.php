@@ -24,15 +24,11 @@
         @endif
     </div>
 
-    @foreach ($data['menus'] as $menu)
+    {{-- @foreach ($data['menus'] as $menu) --}}
 
     <div class="form-group mb-3">
-
-        <label> <strong>{{ $menu->name }}</strong></label>
-        <br>
         @foreach ($data['permissions'] as $permission)
 
-        @if ($menu->id == $permission->menu_id)
 
         @php $permission_name = explode("-", $permission->name) @endphp
 
@@ -42,7 +38,6 @@
             <span class=""> {{ $permission_name[0] }} </span>
         </label>
 
-        @endif
 
         @endforeach
         <div id="bar" class="progress mb-3" style="height: 7px;">
@@ -51,7 +46,7 @@
 
     </div>
 
-    @endforeach
+    {{-- @endforeach --}}
     @endslot
 @endcomponent
 @endsection

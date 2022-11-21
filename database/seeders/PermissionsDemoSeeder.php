@@ -31,9 +31,18 @@ class PermissionsDemoSeeder extends Seeder
 
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'Admin', 'guard_name' => 'web' ]);
-        Permission::create(['name' => 'Kepala Sekolah', 'guard_name' => 'web' ]);
         Permission::create(['name' => 'Siswa', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Angkatan', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Jurusan', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Kelas', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Pemasukan Bos', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Gol Pengeluaran', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Pembayaran SPP', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Pembayaran DSP', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Pengeluaran SPP DSP', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'RKAS', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'User', 'guard_name' => 'web' ]);
+        Permission::create(['name' => 'Golongan User', 'guard_name' => 'web' ]);
 
         // buat role
         $kepsek = Role::create(['id' => 3, 'name' => 'Kapala Sekolah']);
@@ -43,7 +52,7 @@ class PermissionsDemoSeeder extends Seeder
         $dev->givePermissionTo(Permission::all());
 
         $user = \App\Models\User::factory()->create([
-            'name' => 'Robby Izhar RA',
+            'name' => 'Agung Susilo Yudhoyono Suryo Diningrat',
             'email' => 'dev@dev.com',
             'password' => Hash::make('dev')
         ]);

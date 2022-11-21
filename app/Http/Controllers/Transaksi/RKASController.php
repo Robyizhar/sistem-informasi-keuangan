@@ -61,32 +61,26 @@ class RKASController extends Controller {
         try {
             $data = $request->except(['_token', '_method', 'id']);
             DB::beginTransaction();
-            $rkas = RKAS::updateOrCreate(
-                [
-                    'sub_golongan_rkas_id' => $request->sub_golongan_rkas_id,
-                    'golongan_rkas_id' => $request->golongan_rkas_id,
-                ],
-                [
-                    'amount_total' => $request->row_amount_total,
-                    'golongan_rkas_name' => $request->golongan_rkas_name,
-                    'sub_golongan_rkas_name' => $request->sub_golongan_rkas_name,
-                    'volume' => $request->volume,
-                    'unit' => $request->unit,
-                    'unit_price' => $request->unit_price,
-                ]
-            );
-            RKASDetail::updateOrCreate(
-                [
-                    'rkas_id' => $rkas->id,
-                    'pemasukan_bos_detail_id' => $request->pemasukan_bos_detail_id,
-                    'sub_golongan_rkas_id' => $request->sub_golongan_rkas_id,
-                ],
-                [
-                    'description' => $request->description,
-                    'amount_total' => $request->amount_total,
-                    'sub_golongan_rkas_name' => $request->sub_golongan_rkas_name,
-                ]
-            );
+            $rkas = RKAS::updateOrCreate([
+                'sub_golongan_rkas_id' => $request->sub_golongan_rkas_id,
+                'golongan_rkas_id' => $request->golongan_rkas_id,
+            ],[
+                'amount_total' => $request->row_amount_total,
+                'golongan_rkas_name' => $request->golongan_rkas_name,
+                'sub_golongan_rkas_name' => $request->sub_golongan_rkas_name,
+                'volume' => $request->volume,
+                'unit' => $request->unit,
+                'unit_price' => $request->unit_price,
+            ]);
+            RKASDetail::updateOrCreate([
+                'rkas_id' => $rkas->id,
+                'pemasukan_bos_detail_id' => $request->pemasukan_bos_detail_id,
+                'sub_golongan_rkas_id' => $request->sub_golongan_rkas_id,
+            ],[
+                'description' => $request->description,
+                'amount_total' => $request->amount_total,
+                'sub_golongan_rkas_name' => $request->sub_golongan_rkas_name,
+            ]);
             DB::commit();
             return response()->json($rkas, 200);
         } catch (\Throwable $e) {
@@ -98,7 +92,6 @@ class RKASController extends Controller {
     public function show($id) {
         try {
             $data = PemasukanBos::with('pemasukan_detail', 'golongan_rkas.sub_golongan.rkas.rkas_detail')->find($id);
-            // return $data;
             return view('transaksi.rkas.create', compact('data'));
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');

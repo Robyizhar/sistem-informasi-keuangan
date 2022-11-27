@@ -12,12 +12,33 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
+                    <a href="{{ url('/') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Dashboard </p>
                     </a>
                 </li>
+                {{-- SISWA --}}
+                @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->getRoleNames()[0] == 'Siswa')
+                <li class="nav-item">
+                    <a href="{{ url('data-pembayaran/spp') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p> Pembayaran SPP </p>
+                    </a>
+                </li>
+                @endif
+                @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->getRoleNames()[0] == 'Siswa')
+                <li class="nav-item">
+                    <a href="{{ url('data-pembayaran/dsp') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p> Pembayaran DSP </p>
+                    </a>
+                </li>
+                @endif
+                {{-- SISWA --}}
+                @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->getRoleNames()[0] == 'Administrator' || Auth::user()->getRoleNames()[0] == 'Kapala Sekolah')
                 <li class="nav-header">MASTER DATA</li>
+                @endif
+
                 @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->hasAnyPermission(['Siswa']))
                 <li class="nav-item">
                     <a href="{{ route('siswa.index') }}" class="nav-link">
@@ -66,7 +87,9 @@
                     </a>
                 </li>
                 @endif
+                @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->getRoleNames()[0] == 'Administrator' || Auth::user()->getRoleNames()[0] == 'Kapala Sekolah')
                 <li class="nav-header">TRANSAKSI</li>
+                @endif
                 @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->hasAnyPermission(['Pembayaran DSP']))
                 <li class="nav-item">
                     <a href="{{ route('dsp.index') }}" class="nav-link">
@@ -99,7 +122,9 @@
                     </a>
                 </li>
                 @endif
+                @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->getRoleNames()[0] == 'Administrator' || Auth::user()->getRoleNames()[0] == 'Kapala Sekolah')
                 <li class="nav-header">MANAGEMANT USER</li>
+                @endif
                 @if( Auth::user()->getRoleNames()[0] == 'Developer' || Auth::user()->hasAnyPermission(['User']))
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}" class="nav-link">

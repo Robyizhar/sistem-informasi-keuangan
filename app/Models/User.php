@@ -42,5 +42,9 @@ class User extends Authenticatable
         }
         return $roles;
     }
+
+    public function siswa() {
+        return $this->belongsTo(Siswa::class, 'id', 'user_id');
+    }
 }
 

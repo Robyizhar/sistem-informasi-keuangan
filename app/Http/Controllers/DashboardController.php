@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\BaseRepository;
+use Auth;
 
 class DashboardController extends Controller {
 
@@ -14,6 +15,9 @@ class DashboardController extends Controller {
     }
 
     public function index() {
+        if (Auth::user()->getRoleNames()[0] == 'Siswa')
+            return redirect('dashboard');
+
         $data = [
             'organik' => ''
         ];
@@ -21,6 +25,13 @@ class DashboardController extends Controller {
         // return $data;
 
         return view('dashboard.dashboard', compact('data'));
+    }
+
+    public function dashboardSiswa() {
+        if (Auth::user()->getRoleNames()[0] != 'Siswa')
+            return redirect('/');
+
+        return view('dashboard.dashboard-siswa');
     }
 
     public function getData() {

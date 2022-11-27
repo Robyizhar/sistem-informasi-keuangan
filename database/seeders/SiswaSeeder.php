@@ -655,6 +655,14 @@ class SiswaSeeder extends Seeder
             } else {
                 $jurusan = 2;
             }
+
+            $user = \App\Models\User::factory()->create([
+                'name' => $siswa['name'],
+                'email' => $nisns[$index].'@sik.net',
+                'password' => Hash::make('asdw1234')
+            ]);
+            $user->syncRoles(2);
+
             Siswa::updateOrCreate(
                 ['id' => $siswa['id']],
                 [
@@ -665,15 +673,10 @@ class SiswaSeeder extends Seeder
                     'angkatan_id' => $angkatan,
                     'jurusan_id' => $jurusan,
                     'nipd' => $nisns[$index],
-                    'nisn' => $nisns[$index]
+                    'nisn' => $nisns[$index],
+                    'user_id' => $user->id
                 ]
             );
-            $user = \App\Models\User::factory()->create([
-                'name' => $siswa['name'],
-                'email' => $nisns[$index].'@sik.net',
-                'password' => Hash::make('asdw1234')
-            ]);
-            $user->syncRoles(2);
 
             foreach ($kelas as $key) {
 

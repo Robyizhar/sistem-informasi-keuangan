@@ -13,6 +13,7 @@ use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Angkatan;
 use App\Models\User;
+use Auth;
 
 class DashboardController extends Controller {
 
@@ -23,6 +24,9 @@ class DashboardController extends Controller {
     }
 
     public function index() {
+        if (Auth::user()->getRoleNames()[0] == 'Siswa')
+            return redirect('dashboard');
+
         $Pembayaran_spp = PembayaranSpp::get();
         $jumlah_spp = 0;
         foreach ($Pembayaran_spp as $Pembayaran) {

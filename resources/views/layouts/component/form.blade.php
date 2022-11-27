@@ -8,18 +8,20 @@
                         <div class="card-body p-0">
                             <div class="bs-stepper">
                                 @if($isfile == true)
-                                <form id="form-save-update" action="{{ $action }}" method="POST" enctype="multipart/form-data">
+                                <form id="form-save-update" action="{{ isset($action) ? $action : '' }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method($method)
                                     {{ $content }}
                                     <button type="submit" class="btn btn-primary btn-submit waves-effect waves-light">Submit</button>
                                 </form>
                                 @else
-                                <form id="form-save-update" action="{{ $action }}" method="POST">
+                                <form id="form-save-update" action="{{ isset($action) ? $action : '' }}" method="POST">
                                     @csrf
                                     @method($method)
                                     {{ $content }}
-                                    <button type="submit" class="btn btn-primary btn-submit waves-effect waves-light">Submit</button>
+                                    @isset($action)
+                                        <button type="submit" class="btn btn-primary btn-submit waves-effect waves-light">Submit</button>
+                                    @endisset
                                 </form>
                                 @endif
                             </div>

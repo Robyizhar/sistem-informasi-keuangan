@@ -34,8 +34,6 @@
             @if($errors->has('pemasukan_bos_id'))
                 <div class="text-danger"> {{ $errors->first('pemasukan_bos_id')}} </div>
             @endif
-            {{-- <input value="{{ !isset($data['detail']) ? old('name') : old('name', $data['detail']->name) }}" type="text" name="name" class="form-control mb-2 @error('name') is-invalid @enderror" placeholder="name" />
-            @if($errors->has('name')) <div class="text-danger"> {{ $errors->first('name')}} </div> @endif --}}
         </div>
         <div class="col-md-6 form-group mb-3">
             <button type="button" class="btn btn-secondary create-sub-golongan btn-submit waves-effect waves-light">Tambah Sub Golongan</button>

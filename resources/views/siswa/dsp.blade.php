@@ -5,7 +5,6 @@
 @section('content')
 @component('layouts.component.form')
     @slot('isfile', false)
-    @slot('action', !isset($data['detail']) ? route('dsp.store') : route('dsp.update'))
     @isset ($data['detail'])
         @slot('method','PUT')
     @else
@@ -133,13 +132,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="form-group mb-3">
-                <label class="required">Masukan Jumlah Pembayaran</label>
-                <input name="total_payment" readonly type="text" onkeypress="return isNumber(event)" class="form-control mb-2 total_payment" placeholder="total_payment" />
             </div>
         </div>
 

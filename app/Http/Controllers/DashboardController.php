@@ -58,4 +58,11 @@ class DashboardController extends Controller {
 
         return view('dashboard.dashboard', compact('data'));
     }
+
+    public function dashboardSiswa() {
+        if (Auth::user()->getRoleNames()[0] != 'Siswa')
+            return redirect('/');
+
+        return view('dashboard.dashboard-siswa');
+    }
 }

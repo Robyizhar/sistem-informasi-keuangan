@@ -15,6 +15,7 @@ use App\Http\Controllers\Transaksi\DSPController;
 use App\Http\Controllers\Transaksi\SPPController;
 use App\Http\Controllers\Transaksi\PengeluaranSppDsp;
 use App\Http\Controllers\Transaksi\RKASController;
+use App\Http\Controllers\Siswa\PembayaranController;
 
 Auth::routes();
 
@@ -36,10 +37,19 @@ Route::get('/register', function() {
 Route::post('/register', function() {
     return redirect('/login');
 });
-
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/dashboard', [DashboardController::class, 'dashboardSiswa'])->name('siswa');
+
+    Route::prefix('data-pembayaran')->group(function () {
+        Route::get('/spp', [PembayaranController::class, 'getSPP'])
+            ->middleware(['role:Siswa']);
+
+        Route::get('/dsp', [PembayaranController::class, 'getDSP'])
+            ->middleware(['role:Siswa']);
+    });
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('user.index')

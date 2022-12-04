@@ -9,7 +9,9 @@ use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\GolonganRkas;
 use App\Models\SubGolonganRkas;
+use App\Models\PemasukanBos;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class GolonganRKASController extends Controller {
 
@@ -44,7 +46,9 @@ class GolonganRKASController extends Controller {
 
     public function create() {
         try {
-            return view('master.golongan-rkas.create');
+            $this_year = Carbon::now()->year;
+            $pemasukan_bos = PemasukanBos::where( DB::raw('year'), '=', $this_year )->get();
+            return view('master.golongan-rkas.create', compact('pemasukan_bos'));
         } catch (\Throwable $e) {
             Alert::toast($e->getMessage(), 'error');
             return redirect()->route('golongan-rkas.index');

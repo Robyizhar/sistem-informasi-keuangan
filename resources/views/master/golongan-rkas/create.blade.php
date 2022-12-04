@@ -13,16 +13,27 @@
     @endisset
     @slot('content')
     <div class="row">
-        <div class="col-md-6 form-group mb-3">
+        <div class="col-md-4 form-group mb-3">
             <label class="required">Kode Golongan</label>
             <input type="hidden" value="{{ !isset($data['detail']) ? '' : $data['detail']->id }}" name="id">
             <input value="{{ !isset($data['detail']) ? old('code') : old('code', $data['detail']->code) }}" type="text" name="code" class="form-control mb-2 @error('code') is-invalid @enderror" placeholder="code" />
             @if($errors->has('code')) <div class="text-danger"> {{ $errors->first('code')}} </div> @endif
         </div>
-        <div class="col-md-6 form-group mb-3">
+        <div class="col-md-4 form-group mb-3">
             <label class="required">Nama Golongan</label>
             <input value="{{ !isset($data['detail']) ? old('name') : old('name', $data['detail']->name) }}" type="text" name="name" class="form-control mb-2 @error('name') is-invalid @enderror" placeholder="name" />
             @if($errors->has('name')) <div class="text-danger"> {{ $errors->first('name')}} </div> @endif
+        </div>
+        <div class="col-md-4 form-group mb-3">
+            <label class="required">Pemasukan Bos</label>
+            <select name="pemasukan_bos_id" class="form-control">
+                @foreach ($pemasukan_bos as $pemasukan)
+                    <option value="{{ $pemasukan->id }}">{{ $pemasukan->name }}</option>
+                @endforeach
+            </select>
+            @if($errors->has('pemasukan_bos_id'))
+                <div class="text-danger"> {{ $errors->first('pemasukan_bos_id')}} </div>
+            @endif
         </div>
         <div class="col-md-6 form-group mb-3">
             <button type="button" class="btn btn-secondary create-sub-golongan btn-submit waves-effect waves-light">Tambah Sub Golongan</button>

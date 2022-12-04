@@ -24,7 +24,7 @@ class PemasukanBosSeeder extends Seeder
             ]
         );
 
-        PemasukanBosDetail::create([
+        PemasukanBosDetail::updateOrCreate(['id'                    => 1],[
             'id'                    => 1,
             'm_pemasukan_bos_id'    => 1,
             'name'                  => 'Pemasukan Tahun 2022 Tahap 1',
@@ -33,7 +33,7 @@ class PemasukanBosSeeder extends Seeder
             'end_date'              => '2022-04-29',
         ]);
 
-        PemasukanBosDetail::create([
+        PemasukanBosDetail::updateOrCreate(['id'                    => 2],[
             'id'                    => 2,
             'm_pemasukan_bos_id'    => 1,
             'name'                  => 'Pemasukan Tahun 2022 Tahap 2',
@@ -42,8 +42,8 @@ class PemasukanBosSeeder extends Seeder
             'end_date'              => '2022-08-31',
         ]);
 
-        PemasukanBosDetail::create([
-            'id'                    => 3,
+        PemasukanBosDetail::updateOrCreate(['id'                    => 3],[
+
             'm_pemasukan_bos_id'    => 1,
             'name'                  => 'Pemasukan Tahun 2022 Tahap 3',
             'received_funds'        => 750000000,
@@ -51,24 +51,5 @@ class PemasukanBosSeeder extends Seeder
             'end_date'              => '2022-12-31',
         ]);
 
-        // PemasukanBos::updateOrCreate(
-        //     ['id' => 2],
-        //     [
-        //         'name'           => 'Pemasukan Tahun 2022 Tahap 2',
-        //         'type'           => 'REGULER',
-        //         'year'           => '2022',
-        //         'received_funds' => 900000000,
-        //     ]
-        // );
-
-        // PemasukanBos::updateOrCreate(
-        //     ['id' => 3],
-        //     [
-        //         'name'           => 'Pemasukan Tahun 2022 Tahap 3',
-        //         'type'           => 'REGULER',
-        //         'year'           => '2022',
-        //         'received_funds' => 750000000,
-        //     ]
-        // );
     }
 }

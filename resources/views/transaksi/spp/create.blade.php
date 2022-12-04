@@ -166,7 +166,8 @@
                 url: paymentUrl,
                 data: {
                     angkatan_id: 1,
-                    siswa_id: data.siswa_id
+                    siswa_id: data.siswa_id,
+                    kelas: data.kelas
                 },
                 success: function(data) {
                     $('#accordion').empty()
@@ -189,7 +190,7 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-header" style="background-color: #6C757D; color: #FFF;">Semester Ganjil</div>
-                                                <ul class="list-group list-group-flush" id="list-ganjil-${key.id}">
+                                                <ul class="list-group list-group-flush" semester="ganjil" id="list-ganjil-${key.id}">
 
                                                 </ul>
                                             </div>
@@ -197,7 +198,8 @@
                                         <div class="col-md-6">
                                             <div class="card">
                                                 <div class="card-header" style="background-color: #6C757D; color: #FFF;">Semester Genap</div>
-                                                <ul class="list-group list-group-flush" id="list-genap-${key.id}">
+                                                <ul class="list-group list-group-flush" semester="genap" id="list-genap-${key.id}">
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -380,6 +382,8 @@
 
         $(document).on('change', '.spp_payment', function () {
 
+            let semester = $(this).closest('ul').attr('semester');
+
             let spp_cost = 0;
 
             let parent = $(this).parent().parent();
@@ -389,6 +393,14 @@
             element_before.each(function( index ) {
                 $(this).find('input').prop('checked', true);
             });
+
+            if (semester === 'genap') {
+                let ganjil = $(this).closest('.col-md-6').prev();
+                let ganjil_payments = ganjil.find('.list-group-item');
+                ganjil_payments.each(function( index ) {
+                    $(this).find('input').prop('checked', true);
+                });
+            }
 
             let element_after = parent.nextAll();
 
@@ -415,7 +427,7 @@
 
     @isset($data['siswa'])
     <script>
-
+        let kelas = `{{ $data['siswa']->angkatan->kelas }}`;
         $(".total_payment").prop('readonly', false);
 
         $('.rekap-pembayaran').empty();
@@ -427,10 +439,9 @@
             address: $('option:selected', '#siswa').data('address'),
             gender: $('option:selected', '#siswa').data('gender'),
             nisn: $('option:selected', '#siswa').data('nisn'),
-            total_spp: parseInt($('option:selected', '#siswa').data('spp'))
+            total_spp: parseInt($('option:selected', '#siswa').data('spp')),
+            kelas: kelas
         }
-        console.log(data);
-
         getPayment(data);
 
     </script>

@@ -4,6 +4,9 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                @isset($filter)
+                    {{ $filter }}
+                @endisset
                 <div class="col-12">
                     <div class="card" style="padding: 2%;">
                         <div class="card-header">

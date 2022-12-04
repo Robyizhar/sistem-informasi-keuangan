@@ -19,7 +19,7 @@ class AngkatanSeeder extends Seeder
             [
                 'code' => '2020',
                 'entry_year' => '2020',
-                'name' => 'Angkatan 2020',
+                'name' => 'Angkatan 2020/2021',
                 'dsp_cost' => '3500000',
                 'spp_cost' => '50000'
             ]
@@ -30,7 +30,7 @@ class AngkatanSeeder extends Seeder
             [
                 'code' => '2021',
                 'entry_year' => '2021',
-                'name' => 'Angkatan 2021',
+                'name' => 'Angkatan 2021/2022',
                 'dsp_cost' => '3500000',
                 'spp_cost' => '75000'
             ]
@@ -41,7 +41,7 @@ class AngkatanSeeder extends Seeder
             [
                 'code' => '2022',
                 'entry_year' => '2022',
-                'name' => 'Angkatan 2022',
+                'name' => 'Angkatan 2022/2023',
                 'dsp_cost' => '3500000',
                 'spp_cost' => '100000'
             ]
@@ -52,7 +52,7 @@ class AngkatanSeeder extends Seeder
             [
                 'code' => '2023',
                 'entry_year' => '2023',
-                'name' => 'Angkatan 2023',
+                'name' => 'Angkatan 2023/2024',
                 'dsp_cost' => '4500000',
                 'spp_cost' => '120000'
             ]

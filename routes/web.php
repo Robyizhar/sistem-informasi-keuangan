@@ -209,6 +209,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [SPPController::class, 'store'])->name('spp.store');
 
         Route::get('/destroy/{id}', [SPPController::class, 'destroy'])->name('spp.destroy');
+
+        Route::post('/filter', [SPPController::class, 'filter'])->name('spp.filter');
     });
 
     Route::prefix('pengeluaran-spp-dsp')->group(function () {

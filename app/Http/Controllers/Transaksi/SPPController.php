@@ -30,7 +30,7 @@ class SPPController extends Controller
     }
 
     public function getData() {
-        $data =  Siswa::with('angkatan')->orderBy('name', 'asc')->get();
+        $data =  Siswa::with('angkatan', 'jurusan')->orderBy('name', 'asc')->get();
         return DataTables::of($data)
         ->addColumn('Aksi', function ($data) {
 

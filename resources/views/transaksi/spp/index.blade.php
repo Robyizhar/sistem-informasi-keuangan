@@ -7,7 +7,9 @@
         @slot('action', route('spp.create'))
         @slot('content')
             <th width="5%">No</th>
+            <th>NISN</th>
             <th>Nama Siswa</th>
+            <th>Jurusan</th>
             <th>Angkatan</th>
             <th>Jumlah Pembayaran</th>
             <th width="20%">Aksi</th>
@@ -32,7 +34,9 @@ $(document).ready( function () {
         },
         columns: [
             {data: 'DT_RowIndex', name: 'id'},
+            {data: 'nisn', name: 'nisn'},
             {data: 'name', name: 'name'},
+            {data: 'jurusan.name', name: 'jurusan.name'},
             {data: 'angkatan.name', name: 'angkatan.name'},
             {data: 'angkatan.spp_cost', name: 'angkatan.spp_cost'},
             {data: 'Aksi', name: 'Aksi'}
